@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="unibook-api:war">
+    <output-path>$PROJECT_DIR$/unibook-api/target</output-path>
+    <root id="archive" name="unibook-api-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="unibook-api:war exploded" />
+    </root>
+  </artifact>
+</component>
