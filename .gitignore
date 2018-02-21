@@ -13,3 +13,5 @@
 .project
 .settings
 target
+
+.DS-Store
