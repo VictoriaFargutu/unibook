@@ -1,0 +1,15 @@
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+# Created by .ignore support plugin
+*.jar
+*.war
+
+# Maven
+.classpath
+.project
+.settings
+target
