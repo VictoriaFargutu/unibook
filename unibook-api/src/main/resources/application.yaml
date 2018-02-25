@@ -1,0 +1,57 @@
+spring:
+
+  # ===============================
+  # = DATA SOURCE
+  # ===============================
+  # Set here configurations for the database connection
+  datasource:
+    # Connection url for the database
+    url: jdbc:mysql://localhost:3306/smartwash?useUnicode=yes&amp;characterEncoding=UTF-8
+    # Username and password
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+    dbcp2:
+      validation-query: SELECT 1
+      # Keep the connection alive if idle for a long time (needed in production)
+      test-while-idle: true
+
+    # Maximum number of active connections that can be allocated from this pool at the same time.
+    dbcp:
+      max-active: 100
+
+  # ===============================
+  # = JPA / HIBERNATE
+  # ===============================
+  # Use spring.jpa.properties.* for Hibernate native properties (the prefix is
+  # stripped before adding them to the entity manager).
+  jpa:
+    # Hibernate ddl auto (create, create-drop, update): with "update" the database
+    # schema will be automatically updated accordingly to java entities found in
+    # the project
+    hibernate:
+      ddl-auto: update
+      # Naming strategy
+      naming:
+        strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties.hibernate:
+      # Show or not log for each sql query
+      show_sql: true
+      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+  # Always use local profile to ovverride default application properties
+  # with properties from application-local.yaml that is ingored by GIT
+  # (only for development purposes to store API keys or similiar)
+  profiles:
+    include: local
+
+  http:
+    multipart:
+      max-file-size: 80Mb
+      max-request-size: 100Mb
+
+security:
+  sessions: NEVER
+
+logging.level:
+  org.springframework: INFO
