@@ -11,9 +11,11 @@ public class AuthSession {
     @Id
     @GeneratedValue
     private Long id;
+
     private String sessionToken;
     private Long expirationTime;
     private Long userId;
+
     @Transient
     private User user;
 

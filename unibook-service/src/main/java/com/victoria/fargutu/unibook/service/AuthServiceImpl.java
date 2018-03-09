@@ -7,6 +7,7 @@ import com.victoria.fargutu.unibook.repository.model.Credentials;
 import com.victoria.fargutu.unibook.repository.model.User;
 import com.victoria.fargutu.unibook.service.exceptions.InvalidCredentialsException;
 import com.victoria.fargutu.unibook.service.exceptions.UnauthorizedException;
+import com.victoria.fargutu.unibook.service.security.EncryptionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;

@@ -2,16 +2,16 @@ package com.victoria.fargutu.unibook.api.exception;
 
 import com.victoria.fargutu.unibook.service.commons.ExceptionType;
 import com.victoria.fargutu.unibook.service.exceptions.ExceptionInfo;
-import com.victoria.fargutu.unibook.service.exceptions.SmartWashException;
+import com.victoria.fargutu.unibook.service.exceptions.UnibookException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class SmartWashExceptionHandler {
+public class UnibookExceptionHandler {
 
-    @ExceptionHandler(SmartWashException.class)
-    public ResponseEntity handleException(SmartWashException exception) {
+    @ExceptionHandler(UnibookException.class)
+    public ResponseEntity handleException(UnibookException exception) {
 
         if (exception.getExceptionType().equals(ExceptionType.INVALID_FIELD)) {
             ExceptionInfo exceptionInfo = new ExceptionInfo(exception.getExceptionType(), exception.getMessage(), exception.getField());

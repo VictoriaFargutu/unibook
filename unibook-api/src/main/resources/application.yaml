@@ -6,7 +6,7 @@ spring:
   # Set here configurations for the database connection
   datasource:
     # Connection url for the database
-    url: jdbc:mysql://localhost:3306/smartwash?useUnicode=yes&amp;characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/unibook?useUnicode=yes&amp;characterEncoding=UTF-8
     # Username and password
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
@@ -53,5 +53,10 @@ spring:
 security:
   sessions: NEVER
 
-logging.level:
-  org.springframework: INFO
+logging:
+  level:
+    org.spring  framework: INFO
+  path: concretepage/logs
+  pattern:
+      file: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n'
+      console: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n'
