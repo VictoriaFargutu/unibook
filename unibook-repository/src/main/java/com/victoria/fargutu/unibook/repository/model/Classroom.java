@@ -3,6 +3,7 @@ package com.victoria.fargutu.unibook.repository.model;
 import com.victoria.fargutu.unibook.repository.commons.ClassroomType;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Classroom {
@@ -15,6 +16,9 @@ public class Classroom {
 
     private int capacity;
     private boolean hasProjector;
+
+    @OneToMany(mappedBy = "classroom")
+    private Set<ScheduleCell> scheduleCells;
 
     public Long getId() {
         return id;
@@ -42,5 +46,13 @@ public class Classroom {
 
     public void setHasProjector(boolean hasProjector) {
         this.hasProjector = hasProjector;
+    }
+
+    public Set<ScheduleCell> getScheduleCells() {
+        return scheduleCells;
+    }
+
+    public void setScheduleCells(Set<ScheduleCell> scheduleCells) {
+        this.scheduleCells = scheduleCells;
     }
 }

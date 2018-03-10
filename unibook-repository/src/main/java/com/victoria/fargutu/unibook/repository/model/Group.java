@@ -3,6 +3,8 @@ package com.victoria.fargutu.unibook.repository.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.Set;
 
 @Entity
 public class Group {
@@ -14,6 +16,9 @@ public class Group {
     private String name;
     private String year;
     private String specialization;
+
+    @OneToMany(mappedBy = "group")
+    private Set<ScheduleCell> scheduleCells;
 
     public Long getId() {
         return id;
@@ -41,5 +46,13 @@ public class Group {
 
     public void setSpecialization(String specialization) {
         this.specialization = specialization;
+    }
+
+    public Set<ScheduleCell> getScheduleCells() {
+        return scheduleCells;
+    }
+
+    public void setScheduleCells(Set<ScheduleCell> scheduleCells) {
+        this.scheduleCells = scheduleCells;
     }
 }

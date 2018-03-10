@@ -22,7 +22,7 @@ public class UserController {
         return "Hello World!";
     }
 
-    @HasRole(UserRole.ADMIN)
+    //@HasRole(UserRole.ADMIN)
     @RequestMapping(method = RequestMethod.POST)
     public User createUser(@RequestBody User user) {
         return userService.createUser(user);

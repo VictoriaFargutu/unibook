@@ -1,11 +1,7 @@
 package com.victoria.fargutu.unibook.repository.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,8 +14,14 @@ public class Course {
     @NotNull
     private String name;
 
-    @ManyToMany(mappedBy = "courses")
-    private Set<User> users = new HashSet<>();
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name = "course_user",
+            joinColumns = {@JoinColumn(name = "course_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")})
+    private Set<User> users;
+
+    @OneToMany(mappedBy = "course")
+    private Set<ScheduleCell> scheduleCells;
 
     public Long getId() {
         return id;
@@ -39,5 +41,13 @@ public class Course {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    public Set<ScheduleCell> getScheduleCells() {
+        return scheduleCells;
+    }
+
+    public void setScheduleCells(Set<ScheduleCell> scheduleCells) {
+        this.scheduleCells = scheduleCells;
     }
 }

@@ -1,11 +1,11 @@
 package com.victoria.fargutu.unibook.repository.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.victoria.fargutu.unibook.repository.commons.UserRole;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -30,14 +30,15 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name = "Uer_Course",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "course_id")})
-    private Set<Course> courses = new HashSet<>();
+    @ManyToMany(mappedBy = "users")
+    private Set<Course> courses;
 
     @OneToMany(mappedBy = "user")
     private Set<Reservation> reservations;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private Set<ScheduleCell> scheduleCells;
 
     public Long getId() {
         return id;
@@ -97,5 +98,13 @@ public class User {
 
     public void setReservations(Set<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    public Set<ScheduleCell> getScheduleCells() {
+        return scheduleCells;
+    }
+
+    public void setScheduleCells(Set<ScheduleCell> scheduleCells) {
+        this.scheduleCells = scheduleCells;
     }
 }
