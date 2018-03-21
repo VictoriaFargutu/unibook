@@ -1,4 +1,4 @@
-package com.victoria.fargutu.unibook.service;
+package com.victoria.fargutu.unibook.service.reservation;
 
 import com.victoria.fargutu.unibook.repository.db.ReservationRepository;
 import com.victoria.fargutu.unibook.repository.model.Reservation;
@@ -16,16 +16,19 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Reservation createReservation(Reservation reservation) {
+        //TODO if is possible then make reservation
+        reservationRepository.save(reservation);
         return null;
     }
 
     @Override
     public Reservation getReservationById(Long id) {
-        return null;
+        return reservationRepository.findOne(id);
     }
 
     @Override
     public Reservation updateReservation(Long id, Reservation reservation) {
+
         return null;
     }
 

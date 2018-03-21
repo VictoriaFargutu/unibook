@@ -1,4 +1,4 @@
-package com.victoria.fargutu.unibook.repository.model;
+package com.victoria.fargutu.unibook.repository.model.auth;
 
 public class Credentials {
     private String email;

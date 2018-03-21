@@ -1,11 +1,13 @@
 package com.victoria.fargutu.unibook.api.interceptor;
 
 import com.victoria.fargutu.unibook.repository.commons.UserRole;
-import com.victoria.fargutu.unibook.repository.model.AuthManager;
-import com.victoria.fargutu.unibook.repository.model.User;
-import com.victoria.fargutu.unibook.service.AuthService;
+import com.victoria.fargutu.unibook.repository.model.auth.AuthManager;
+import com.victoria.fargutu.unibook.repository.model.auth.AuthSession;
+import com.victoria.fargutu.unibook.repository.model.user.User;
+import com.victoria.fargutu.unibook.service.auth.AuthService;
 import com.victoria.fargutu.unibook.service.exceptions.UnauthorizedException;
 import com.victoria.fargutu.unibook.service.security.HasRole;
+import com.victoria.fargutu.unibook.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -18,11 +20,13 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthInterceptor extends HandlerInterceptorAdapter {
     private AuthService authService;
     private AuthManager authManager;
+    private UserService userService;
 
     @Autowired
-    public AuthInterceptor(AuthService authService, AuthManager authManager) {
+    public AuthInterceptor(AuthService authService, AuthManager authManager, UserService userService) {
         this.authService = authService;
         this.authManager = authManager;
+        this.userService = userService;
     }
 
     @Override
@@ -33,10 +37,12 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             if (method.getMethod().getAnnotation(HasRole.class) == null) {
                 return true;
             } else if (token != null) {
-                User user = authService.validateToken(token);
+                AuthSession authSession = authService.validateToken(token);
+                User user = userService.getUserById(authSession.getUserId());
                 authManager.setLoggedInUser(user);
+                authManager.setAuthSession(authSession);
                 UserRole userRole = method.getMethod().getAnnotation(HasRole.class).value();
-                if (user.getRole() != userRole) {
+                if (!user.isHigher(userRole)) {
                     throw new UnauthorizedException();
                 }
             } else if (method.getMethod().getAnnotation(HasRole.class) != null) {

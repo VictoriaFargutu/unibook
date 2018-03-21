@@ -1,8 +1,10 @@
-package com.victoria.fargutu.unibook.repository.model;
+package com.victoria.fargutu.unibook.repository.model.schedule;
 
 import com.victoria.fargutu.unibook.repository.commons.Day;
 import com.victoria.fargutu.unibook.repository.commons.Subgroup;
 import com.victoria.fargutu.unibook.repository.commons.WeekType;
+import com.victoria.fargutu.unibook.repository.model.Classroom;
+import com.victoria.fargutu.unibook.repository.model.user.User;
 
 import javax.persistence.*;
 
@@ -13,8 +15,8 @@ public class ScheduleCell {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "group_id")
-    private Group group;
+    @JoinColumn(name = "students_group_id")
+    private StudentsGroup studentsGroup;
 
     @Enumerated(EnumType.STRING)
     private Subgroup subgroup;
@@ -47,12 +49,12 @@ public class ScheduleCell {
         return id;
     }
 
-    public Group getGroup() {
-        return group;
+    public StudentsGroup getStudentsGroup() {
+        return studentsGroup;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setStudentsGroup(StudentsGroup studentsGroup) {
+        this.studentsGroup = studentsGroup;
     }
 
     public Subgroup getSubgroup() {

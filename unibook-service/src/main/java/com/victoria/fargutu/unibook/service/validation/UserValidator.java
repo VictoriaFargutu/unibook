@@ -1,6 +1,6 @@
 package com.victoria.fargutu.unibook.service.validation;
 
-import com.victoria.fargutu.unibook.repository.model.User;
+import com.victoria.fargutu.unibook.repository.model.user.User;
 import com.victoria.fargutu.unibook.service.commons.Constant;
 import com.victoria.fargutu.unibook.service.commons.Field;
 import com.victoria.fargutu.unibook.service.exceptions.InvalidFieldException;

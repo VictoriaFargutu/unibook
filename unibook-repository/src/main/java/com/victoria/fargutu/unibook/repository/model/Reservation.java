@@ -1,5 +1,7 @@
 package com.victoria.fargutu.unibook.repository.model;
 
+import com.victoria.fargutu.unibook.repository.model.user.User;
+
 import javax.persistence.*;
 import java.util.Date;
 

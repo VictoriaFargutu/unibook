@@ -1,4 +1,4 @@
-package com.victoria.fargutu.unibook.repository.model;
+package com.victoria.fargutu.unibook.repository.model.schedule;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,7 +7,7 @@ import javax.persistence.OneToMany;
 import java.util.Set;
 
 @Entity
-public class Group {
+public class StudentsGroup {
 
     @Id
     @GeneratedValue
@@ -17,7 +17,7 @@ public class Group {
     private String year;
     private String specialization;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "studentsGroup")
     private Set<ScheduleCell> scheduleCells;
 
     public Long getId() {

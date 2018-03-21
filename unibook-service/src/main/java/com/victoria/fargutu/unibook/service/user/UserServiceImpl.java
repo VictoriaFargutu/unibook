@@ -1,8 +1,9 @@
-package com.victoria.fargutu.unibook.service;
+package com.victoria.fargutu.unibook.service.user;
 
 import com.victoria.fargutu.unibook.repository.commons.UserRole;
 import com.victoria.fargutu.unibook.repository.db.UserRepository;
-import com.victoria.fargutu.unibook.repository.model.User;
+import com.victoria.fargutu.unibook.repository.model.user.User;
+import com.victoria.fargutu.unibook.service.ExcelReader;
 import com.victoria.fargutu.unibook.service.commons.ExceptionType;
 import com.victoria.fargutu.unibook.service.exceptions.NotFoundException;
 import com.victoria.fargutu.unibook.service.exceptions.UnibookException;

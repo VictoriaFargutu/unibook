@@ -1,4 +1,4 @@
-package com.victoria.fargutu.unibook.repository.model;
+package com.victoria.fargutu.unibook.repository.model.auth;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +17,6 @@ public class AuthSession {
     private Long userId;
 
     @Transient
-    private User user;
 
     public Long getId() {
         return id;
@@ -45,13 +44,5 @@ public class AuthSession {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

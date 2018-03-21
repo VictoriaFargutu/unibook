@@ -1,4 +1,7 @@
-package com.victoria.fargutu.unibook.repository.model;
+package com.victoria.fargutu.unibook.repository.model.schedule;
+
+import com.victoria.fargutu.unibook.repository.model.schedule.ScheduleCell;
+import com.victoria.fargutu.unibook.repository.model.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

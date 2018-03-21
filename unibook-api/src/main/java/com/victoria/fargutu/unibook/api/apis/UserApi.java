@@ -1,19 +1,19 @@
-package com.victoria.fargutu.unibook.api.controller;
+package com.victoria.fargutu.unibook.api.apis;
 
 import com.victoria.fargutu.unibook.repository.commons.UserRole;
-import com.victoria.fargutu.unibook.repository.model.User;
-import com.victoria.fargutu.unibook.service.UserService;
+import com.victoria.fargutu.unibook.repository.model.user.User;
+import com.victoria.fargutu.unibook.service.user.UserService;
 import com.victoria.fargutu.unibook.service.security.HasRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/users")
-public class UserController {
+public class UserApi {
     private UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserApi(UserService userService) {
         this.userService = userService;
     }
 

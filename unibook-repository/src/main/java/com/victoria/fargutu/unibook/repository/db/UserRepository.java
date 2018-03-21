@@ -1,6 +1,6 @@
 package com.victoria.fargutu.unibook.repository.db;
 
-import com.victoria.fargutu.unibook.repository.model.User;
+import com.victoria.fargutu.unibook.repository.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {

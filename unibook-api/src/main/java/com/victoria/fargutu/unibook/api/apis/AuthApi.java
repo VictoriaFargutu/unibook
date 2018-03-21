@@ -1,8 +1,7 @@
-package com.victoria.fargutu.unibook.api.controller;
+package com.victoria.fargutu.unibook.api.apis;
 
-import com.victoria.fargutu.unibook.repository.model.AuthSession;
-import com.victoria.fargutu.unibook.repository.model.User;
-import com.victoria.fargutu.unibook.service.AuthService;
+import com.victoria.fargutu.unibook.repository.model.auth.AuthSession;
+import com.victoria.fargutu.unibook.service.auth.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,16 +10,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = "/auth")
-public class AuthController {
+public class AuthApi {
     private AuthService authService;
 
     @Autowired
-    AuthController(AuthService authService) {
+    AuthApi(AuthService authService) {
         this.authService = authService;
     }
 
     @RequestMapping(path = "/validation", method = RequestMethod.GET)
-    public User validateToken(@RequestHeader("X-Auth-Token") String authToken) {
+    public AuthSession validateToken(@RequestHeader("X-Auth-Token") String authToken) {
         return authService.validateToken(authToken);
     }
 

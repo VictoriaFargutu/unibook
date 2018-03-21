@@ -1,4 +1,4 @@
-package com.victoria.fargutu.unibook.service;
+package com.victoria.fargutu.unibook.service.reservation;
 
 import com.victoria.fargutu.unibook.repository.model.Reservation;
 

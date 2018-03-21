@@ -1,10 +1,11 @@
-package com.victoria.fargutu.unibook.service;
+package com.victoria.fargutu.unibook.service.auth;
 
 import com.victoria.fargutu.unibook.repository.db.SessionRepository;
 import com.victoria.fargutu.unibook.repository.db.UserRepository;
-import com.victoria.fargutu.unibook.repository.model.AuthSession;
-import com.victoria.fargutu.unibook.repository.model.Credentials;
-import com.victoria.fargutu.unibook.repository.model.User;
+import com.victoria.fargutu.unibook.repository.model.auth.AuthManager;
+import com.victoria.fargutu.unibook.repository.model.auth.AuthSession;
+import com.victoria.fargutu.unibook.repository.model.auth.Credentials;
+import com.victoria.fargutu.unibook.repository.model.user.User;
 import com.victoria.fargutu.unibook.service.exceptions.InvalidCredentialsException;
 import com.victoria.fargutu.unibook.service.exceptions.UnauthorizedException;
 import com.victoria.fargutu.unibook.service.security.EncryptionManager;
@@ -21,13 +22,15 @@ public class AuthServiceImpl implements AuthService {
     private EncryptionManager encryptionManager;
     private UserRepository userRepository;
     private SessionRepository sessionRepository;
+    private AuthManager authManager;
 
 
     @Autowired
-    public AuthServiceImpl(SessionRepository sessionRepository, EncryptionManager encryptionManager, UserRepository userRepository) {
+    public AuthServiceImpl(SessionRepository sessionRepository, EncryptionManager encryptionManager, UserRepository userRepository, AuthManager authManager) {
         this.sessionRepository = sessionRepository;
         this.userRepository = userRepository;
         this.encryptionManager = encryptionManager;
+        this.authManager = authManager;
     }
 
     @Override
@@ -39,27 +42,28 @@ public class AuthServiceImpl implements AuthService {
         }
         AuthSession authSession = new AuthSession();
         authSession.setSessionToken(token);
-        authSession.setExpirationTime(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000);
+        authSession.setExpirationTime(System.currentTimeMillis() + 3 * 60 * 60 * 1000);
         authSession.setUserId(user.getId());
         return sessionRepository.save(authSession);
     }
+//
+//
+//    @Override
+//    public AuthSession getAuthSessionByToken(String token) {
+//        return sessionRepository.findBySessionToken(token);
+//    }
+//
+//    @Override
+//    public void deleteSessionById(Long id) {
+//        sessionRepository.delete(id);
+//    }
 
 
     @Override
-    public AuthSession getAuthSessionByToken(String token) {
-        return sessionRepository.findBySessionToken(token);
-    }
-
-    @Override
-    public void deleteSessionById(Long id) {
-        sessionRepository.delete(id);
-    }
-
-    @Override
-    public User validateToken(String token) {
-        AuthSession authSession = getAuthSessionByToken(token);
+    public AuthSession validateToken(String token) {
+        AuthSession authSession = sessionRepository.findBySessionToken(token);
         if (authSession != null && authSession.getExpirationTime() > System.currentTimeMillis()) {
-            return userRepository.findOne(authSession.getUserId());
+            return authSession;
         } else {
             throw new UnauthorizedException();
         }
@@ -90,7 +94,6 @@ public class AuthServiceImpl implements AuthService {
             throw new InvalidCredentialsException("Invalid credentials!");
         }
         AuthSession authSession = createAuthSession(user);
-        authSession.setUser(user);
 
         return authSession;
     }
@@ -104,5 +107,10 @@ public class AuthServiceImpl implements AuthService {
                 sessionRepository.delete(session);
             }
         }
+    }
+
+    @Override
+    public void logout() {
+        sessionRepository.delete(authManager.getAuthSession());
     }
 }

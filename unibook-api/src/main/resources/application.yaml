@@ -30,7 +30,7 @@ spring:
     # schema will be automatically updated accordingly to java entities found in
     # the project
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       # Naming strategy
       naming:
         strategy: org.hibernate.cfg.ImprovedNamingStrategy
@@ -44,6 +44,8 @@ spring:
   # (only for development purposes to store API keys or similiar)
   profiles:
     include: local
+  thymeleaf:
+    cache: false
 
   http:
     multipart:

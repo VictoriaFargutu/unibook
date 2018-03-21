@@ -4,10 +4,10 @@ import com.victoria.fargutu.unibook.service.commons.ExceptionType;
 import com.victoria.fargutu.unibook.service.exceptions.ExceptionInfo;
 import com.victoria.fargutu.unibook.service.exceptions.UnibookException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class UnibookExceptionHandler {
 
     @ExceptionHandler(UnibookException.class)

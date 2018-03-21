@@ -1,7 +1,7 @@
-package com.victoria.fargutu.unibook.service;
+package com.victoria.fargutu.unibook.service.course;
 
 import com.victoria.fargutu.unibook.repository.db.CourseRepository;
-import com.victoria.fargutu.unibook.repository.model.Course;
+import com.victoria.fargutu.unibook.repository.model.schedule.Course;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
