@@ -1,4 +1,4 @@
-package com.victoria.fargutu.unibook.api;
+package com.victoria.fargutu.unibook;
 
 import com.victoria.fargutu.unibook.repository.configuration.MyAppJpaConfiguration;
 import org.springframework.boot.SpringApplication;
@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @SpringBootApplication
 @Import({MyAppJpaConfiguration.class})
-@ComponentScan({"com.victoria.fargutu.unibook"})
+@ComponentScan({"com.victoria.fargutu.unibook",})
 public class MyApplication extends SpringBootServletInitializer {
     public static void main(String[] args) {
         SpringApplication.run(MyApplication.class, args);

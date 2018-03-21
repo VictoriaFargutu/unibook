@@ -51,7 +51,8 @@ spring:
     multipart:
       max-file-size: 80Mb
       max-request-size: 100Mb
-
+server:
+  port: 2020
 security:
   sessions: NEVER
 
