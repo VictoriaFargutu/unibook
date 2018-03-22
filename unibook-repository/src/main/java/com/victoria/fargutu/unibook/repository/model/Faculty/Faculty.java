@@ -1,4 +1,4 @@
-package com.victoria.fargutu.unibook.repository.model.schedule;
+package com.victoria.fargutu.unibook.repository.model.Faculty;
 
 import com.victoria.fargutu.unibook.repository.model.schedule.Schedule;
 

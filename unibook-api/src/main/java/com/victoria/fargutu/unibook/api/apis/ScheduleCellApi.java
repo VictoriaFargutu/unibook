@@ -1,7 +1,7 @@
 package com.victoria.fargutu.unibook.api.apis;
 
-import com.victoria.fargutu.unibook.repository.model.schedule.ScheduleCell;
-import com.victoria.fargutu.unibook.repository.model.schedule.ScheduleCellResponse;
+import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCell;
+import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCellResponse;
 import com.victoria.fargutu.unibook.service.scheduleCell.ScheduleCellService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -3,9 +3,9 @@ package com.victoria.fargutu.unibook.repository.model.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.victoria.fargutu.unibook.repository.commons.UserRole;
-import com.victoria.fargutu.unibook.repository.model.Reservation;
-import com.victoria.fargutu.unibook.repository.model.schedule.Course;
-import com.victoria.fargutu.unibook.repository.model.schedule.ScheduleCell;
+import com.victoria.fargutu.unibook.repository.model.reservation.Reservation;
+import com.victoria.fargutu.unibook.repository.model.course.Course;
+import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCell;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

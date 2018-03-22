@@ -2,10 +2,10 @@ package com.victoria.fargutu.unibook.service.scheduleCell;
 
 import com.victoria.fargutu.unibook.repository.commons.Day;
 import com.victoria.fargutu.unibook.repository.db.ScheduleCellRepository;
-import com.victoria.fargutu.unibook.repository.model.Classroom;
-import com.victoria.fargutu.unibook.repository.model.schedule.ScheduleCell;
-import com.victoria.fargutu.unibook.repository.model.schedule.ScheduleCellResponse;
-import com.victoria.fargutu.unibook.repository.model.schedule.StudentsGroup;
+import com.victoria.fargutu.unibook.repository.model.classroom.Classroom;
+import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCell;
+import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCellResponse;
+import com.victoria.fargutu.unibook.repository.model.studentsGroup.StudentsGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

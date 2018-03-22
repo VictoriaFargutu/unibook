@@ -1,30 +1,24 @@
-package com.victoria.fargutu.unibook.repository.model.schedule;
+package com.victoria.fargutu.unibook.repository.model.schedulleCell;
 
 import com.victoria.fargutu.unibook.repository.commons.Day;
 import com.victoria.fargutu.unibook.repository.commons.Subgroup;
 import com.victoria.fargutu.unibook.repository.commons.WeekType;
-import com.victoria.fargutu.unibook.repository.model.Classroom;
+import com.victoria.fargutu.unibook.repository.model.classroom.Classroom;
+import com.victoria.fargutu.unibook.repository.model.course.Course;
+import com.victoria.fargutu.unibook.repository.model.schedule.Schedule;
+import com.victoria.fargutu.unibook.repository.model.studentsGroup.StudentsGroup;
 
 public class ScheduleCellResponse {
 
     private Long id;
-
     private StudentsGroup studentsGroup;
-
     private Subgroup subgroup;
-
     private WeekType weekType;
-
     private String hour;
-
     private Day day;
-
     private Long userId;
-
     private Course course;
-
     private Classroom classroom;
-
     private Schedule schedule;
 
     public ScheduleCellResponse(ScheduleCell scheduleCell) {

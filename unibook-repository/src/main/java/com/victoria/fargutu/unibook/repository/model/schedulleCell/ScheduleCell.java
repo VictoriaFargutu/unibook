@@ -1,9 +1,12 @@
-package com.victoria.fargutu.unibook.repository.model.schedule;
+package com.victoria.fargutu.unibook.repository.model.schedulleCell;
 
 import com.victoria.fargutu.unibook.repository.commons.Day;
 import com.victoria.fargutu.unibook.repository.commons.Subgroup;
 import com.victoria.fargutu.unibook.repository.commons.WeekType;
-import com.victoria.fargutu.unibook.repository.model.Classroom;
+import com.victoria.fargutu.unibook.repository.model.classroom.Classroom;
+import com.victoria.fargutu.unibook.repository.model.course.Course;
+import com.victoria.fargutu.unibook.repository.model.schedule.Schedule;
+import com.victoria.fargutu.unibook.repository.model.studentsGroup.StudentsGroup;
 import com.victoria.fargutu.unibook.repository.model.user.User;
 
 import javax.persistence.*;

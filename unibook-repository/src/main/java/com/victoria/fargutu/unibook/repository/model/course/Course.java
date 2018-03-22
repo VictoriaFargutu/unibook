@@ -1,6 +1,6 @@
-package com.victoria.fargutu.unibook.repository.model.schedule;
+package com.victoria.fargutu.unibook.repository.model.course;
 
-import com.victoria.fargutu.unibook.repository.model.schedule.ScheduleCell;
+import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCell;
 import com.victoria.fargutu.unibook.repository.model.user.User;
 
 import javax.persistence.*;

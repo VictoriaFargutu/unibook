@@ -1,4 +1,6 @@
-package com.victoria.fargutu.unibook.repository.model.schedule;
+package com.victoria.fargutu.unibook.repository.model.studentsGroup;
+
+import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCell;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

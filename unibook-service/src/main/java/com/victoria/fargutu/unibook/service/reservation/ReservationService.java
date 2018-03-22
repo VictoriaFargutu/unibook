@@ -1,6 +1,6 @@
 package com.victoria.fargutu.unibook.service.reservation;
 
-import com.victoria.fargutu.unibook.repository.model.Reservation;
+import com.victoria.fargutu.unibook.repository.model.reservation.Reservation;
 
 public interface ReservationService {
     Reservation createReservation(Reservation reservation);
