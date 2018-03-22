@@ -3,35 +3,35 @@ package com.victoria.fargutu.unibook.repository.model.schedulleCell;
 import com.victoria.fargutu.unibook.repository.commons.Day;
 import com.victoria.fargutu.unibook.repository.commons.Subgroup;
 import com.victoria.fargutu.unibook.repository.commons.WeekType;
-import com.victoria.fargutu.unibook.repository.model.classroom.Classroom;
-import com.victoria.fargutu.unibook.repository.model.course.Course;
-import com.victoria.fargutu.unibook.repository.model.schedule.Schedule;
-import com.victoria.fargutu.unibook.repository.model.studentsGroup.StudentsGroup;
+import com.victoria.fargutu.unibook.repository.model.classroom.ClassroomResponse;
+import com.victoria.fargutu.unibook.repository.model.course.CourseResponse;
+import com.victoria.fargutu.unibook.repository.model.schedule.ScheduleResponse;
+import com.victoria.fargutu.unibook.repository.model.studentsGroup.StudentsGroupResponse;
 
 public class ScheduleCellResponse {
 
     private Long id;
-    private StudentsGroup studentsGroup;
+    private StudentsGroupResponse studentsGroup;
     private Subgroup subgroup;
     private WeekType weekType;
     private String hour;
     private Day day;
     private Long userId;
-    private Course course;
-    private Classroom classroom;
-    private Schedule schedule;
+    private CourseResponse course;
+    private ClassroomResponse classroom;
+    private ScheduleResponse schedule;
 
     public ScheduleCellResponse(ScheduleCell scheduleCell) {
         this.id = scheduleCell.getId();
-        this.studentsGroup = scheduleCell.getStudentsGroup();
+        this.studentsGroup = new StudentsGroupResponse(scheduleCell.getStudentsGroup());
         this.subgroup = scheduleCell.getSubgroup();
         this.weekType = scheduleCell.getWeekType();
         this.hour = scheduleCell.getHour();
         this.day = scheduleCell.getDay();
         this.userId = scheduleCell.getUser().getId();
-        this.course = scheduleCell.getCourse();
-        this.classroom = scheduleCell.getClassroom();
-        this.schedule = scheduleCell.getSchedule();
+        this.course = new CourseResponse(scheduleCell.getCourse());
+        this.classroom = new ClassroomResponse(scheduleCell.getClassroom());
+        this.schedule = new ScheduleResponse(scheduleCell.getSchedule());
     }
 
     public Long getId() {
@@ -42,11 +42,11 @@ public class ScheduleCellResponse {
         this.id = id;
     }
 
-    public StudentsGroup getStudentsGroup() {
+    public StudentsGroupResponse getStudentsGroup() {
         return studentsGroup;
     }
 
-    public void setStudentsGroup(StudentsGroup studentsGroup) {
+    public void setStudentsGroup(StudentsGroupResponse studentsGroup) {
         this.studentsGroup = studentsGroup;
     }
 
@@ -90,27 +90,27 @@ public class ScheduleCellResponse {
         this.userId = userId;
     }
 
-    public Course getCourse() {
+    public CourseResponse getCourse() {
         return course;
     }
 
-    public void setCourse(Course course) {
+    public void setCourse(CourseResponse course) {
         this.course = course;
     }
 
-    public Classroom getClassroom() {
+    public ClassroomResponse getClassroom() {
         return classroom;
     }
 
-    public void setClassroom(Classroom classroom) {
+    public void setClassroom(ClassroomResponse classroom) {
         this.classroom = classroom;
     }
 
-    public Schedule getSchedule() {
+    public ScheduleResponse getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(Schedule schedule) {
+    public void setSchedule(ScheduleResponse schedule) {
         this.schedule = schedule;
     }
 }

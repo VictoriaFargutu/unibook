@@ -4,6 +4,11 @@ public class CourseResponse {
     private Long id;
     private String name;
 
+    public CourseResponse(Course course) {
+        this.id = course.getId();
+        this.name = course.getName();
+    }
+
     public Long getId() {
         return id;
     }
@@ -15,5 +20,4 @@ public class CourseResponse {
     public void setName(String name) {
         this.name = name;
     }
-
 }

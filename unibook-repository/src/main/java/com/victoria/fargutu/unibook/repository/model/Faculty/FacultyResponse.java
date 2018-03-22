@@ -5,6 +5,11 @@ public class FacultyResponse {
 
     private String name;
 
+    public FacultyResponse(Faculty faculty) {
+        this.id = faculty.getId();
+        this.name = faculty.getName();
+    }
+
     public Long getId() {
         return id;
     }

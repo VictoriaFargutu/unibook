@@ -6,6 +6,13 @@ public class StudentsGroupResponse {
     private String year;
     private String specialization;
 
+    public StudentsGroupResponse(StudentsGroup studentsGroup) {
+        this.id = studentsGroup.getId();
+        this.name = studentsGroup.getName();
+        this.year = studentsGroup.getYear();
+        this.specialization = studentsGroup.getSpecialization();
+    }
+
     public Long getId() {
         return id;
     }
