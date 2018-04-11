@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Login</title>
+    <!-- Bootstrap Styles-->
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet"/>
+    <!-- FontAwesome Styles-->
+    <link th:href="@{/css/font-awesome.css}" rel="stylesheet"/>
+    <!-- Morris Chart Styles-->
+    <link th:href="@{/css/morris-0.4.3.min.css}" rel="stylesheet"/>
+    <!-- Custom Styles-->
+    <link th:href="@{/css/custom-styles.css}" rel="stylesheet"/>
+    <!-- Google Fonts-->
+    <link th:href="@{'http://fonts.googleapis.com/css?family=Open+Sans'}" rel='stylesheet' type='text/css'/>
+    <link th:href="@{/css/login.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <div class="card card-container">
+        <img id="logo-img" class="profile-img-card" th:src="@{/img/logo.png}"/>
+        <p id="profile-name" class="profile-name-card"></p>
+        <form id="form-signin" class="form-signin" th:action="@{/authorization/login}" method="POST">
+            <input type="text" id="inputUsername" class="form-control" placeholder="Username" required="required"
+                   autofocus="autofocus"/>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="required"/>
+
+            <!--/*@thymesVar id="error" type="java.util.Map"*/-->
+            <div class="alert alert-danger" th:if="${error}">
+                <strong th:text="${error}"></strong>
+            </div>
+
+            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
+            <input type="hidden" id="Authorization" th:name="Authorization"/>
+
+        </form>
+        <a href="#" class="forgot-password">
+            Forgot the password?
+        </a>
+    </div>
+</div>
+
+<script th:src="@{'http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'}"></script>
+<script th:src="@{/js/login/login.js}"></script>
+</body>
+</html>

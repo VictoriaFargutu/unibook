@@ -2,10 +2,8 @@ package com.victoria.fargutu.unibook.service.scheduleCell;
 
 import com.victoria.fargutu.unibook.repository.commons.Day;
 import com.victoria.fargutu.unibook.repository.db.ScheduleCellRepository;
-import com.victoria.fargutu.unibook.repository.model.classroom.Classroom;
 import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCell;
 import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCellResponse;
-import com.victoria.fargutu.unibook.repository.model.studentsGroup.StudentsGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +29,7 @@ public class ScheduleCellServiceImpl implements ScheduleCellService {
         List<ScheduleCell> scheduleCells = scheduleCellRepository.findAll();
         List<ScheduleCellResponse> scheduleCellResponses = new ArrayList<>();
         for (ScheduleCell scheduleCell : scheduleCells) {
-            if (!scheduleCell.getHour().equals(hour)) {
+            if (scheduleCell.getHour().equals(hour)) {
                 scheduleCells.remove(scheduleCell);
                 if (scheduleCells.isEmpty()) {
                     break;
@@ -44,17 +42,53 @@ public class ScheduleCellServiceImpl implements ScheduleCellService {
     }
 
     @Override
-    public List<ScheduleCell> findAllByFreeDay(Day day) {
-        return null;
+    public List<ScheduleCellResponse> findAllByFreeDay(Day day) {
+        List<ScheduleCell> scheduleCells = scheduleCellRepository.findAll();
+        List<ScheduleCellResponse> scheduleCellResponses = new ArrayList<>();
+        for (ScheduleCell scheduleCell : scheduleCells) {
+            if (scheduleCell.getDay().equals(day)) {
+                scheduleCells.remove(scheduleCell);
+                if (scheduleCells.isEmpty()) {
+                    break;
+                }
+            } else {
+                scheduleCellResponses.add(new ScheduleCellResponse(scheduleCell));
+            }
+        }
+        return scheduleCellResponses;
     }
 
     @Override
-    public List<ScheduleCell> findAllByFreeClassroom(Classroom classroom) {
-        return null;
+    public List<ScheduleCellResponse> findAllByFreeClassroom(Long classroomId) {
+        List<ScheduleCell> scheduleCells = scheduleCellRepository.findAll();
+        List<ScheduleCellResponse> scheduleCellResponses = new ArrayList<>();
+        for (ScheduleCell scheduleCell : scheduleCells) {
+            if (scheduleCell.getClassroom().getId().equals(classroomId)) {
+                scheduleCells.remove(scheduleCell);
+                if (scheduleCells.isEmpty()) {
+                    break;
+                }
+            } else {
+                scheduleCellResponses.add(new ScheduleCellResponse(scheduleCell));
+            }
+        }
+        return scheduleCellResponses;
     }
 
     @Override
-    public List<ScheduleCell> findAllByFreeStudentsGroup(StudentsGroup studentsGroup) {
-        return null;
+    public List<ScheduleCellResponse> findAllByFreeStudentsGroup(Long studentsGroupId) {
+        List<ScheduleCell> scheduleCells = scheduleCellRepository.findAll();
+        List<ScheduleCellResponse> scheduleCellResponses = new ArrayList<>();
+        for (ScheduleCell scheduleCell : scheduleCells) {
+            if (scheduleCell.getStudentsGroup().getId().equals(studentsGroupId)) {
+                scheduleCells.remove(scheduleCell);
+                if (scheduleCells.isEmpty()) {
+                    break;
+                }
+            } else {
+                scheduleCellResponses.add(new ScheduleCellResponse(scheduleCell));
+            }
+        }
+        return scheduleCellResponses;
     }
 }

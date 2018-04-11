@@ -1,5 +1,6 @@
 package com.victoria.fargutu.unibook.api.apis;
 
+import com.victoria.fargutu.unibook.repository.commons.Day;
 import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCell;
 import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCellResponse;
 import com.victoria.fargutu.unibook.service.scheduleCell.ScheduleCellService;
@@ -28,4 +29,18 @@ public class ScheduleCellApi {
         return scheduleCellService.findAllByFreeHour(hour);
     }
 
+    @RequestMapping(value = "day", method = RequestMethod.GET)
+    public List<ScheduleCellResponse> getAllByFreeDay(@RequestParam Day day) {
+        return scheduleCellService.findAllByFreeDay(day);
+    }
+
+    @RequestMapping(value = "/classroom", method = RequestMethod.GET)
+    public List<ScheduleCellResponse> getAllByFreeClassroom(@RequestParam Long classroomId) {
+        return scheduleCellService.findAllByFreeClassroom(classroomId);
+    }
+
+    @RequestMapping(value = "/students/group", method = RequestMethod.GET)
+    public List<ScheduleCellResponse> getAllByFreeStudentsGroup(@RequestParam Long studentsGroupId) {
+        return scheduleCellService.findAllByFreeStudentsGroup(studentsGroupId);
+    }
 }
