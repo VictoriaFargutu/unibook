@@ -1,9 +1,10 @@
 package com.victoria.fargutu.unibook.service.reservation;
 
 import com.victoria.fargutu.unibook.repository.model.reservation.Reservation;
+import com.victoria.fargutu.unibook.repository.model.reservation.ReservationResponse;
 
 public interface ReservationService {
-    Reservation createReservation(Reservation reservation);
+    ReservationResponse createReservation(Reservation reservation);
 
     Reservation getReservationById(Long id);
 

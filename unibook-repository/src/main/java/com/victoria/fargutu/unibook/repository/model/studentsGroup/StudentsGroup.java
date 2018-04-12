@@ -1,5 +1,6 @@
 package com.victoria.fargutu.unibook.repository.model.studentsGroup;
 
+import com.victoria.fargutu.unibook.repository.model.reservation.Reservation;
 import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCell;
 
 import javax.persistence.Entity;
@@ -21,6 +22,9 @@ public class StudentsGroup {
 
     @OneToMany(mappedBy = "studentsGroup")
     private Set<ScheduleCell> scheduleCells;
+
+    @OneToMany(mappedBy = "studentsGroup")
+    private Set<Reservation> reservations;
 
     public Long getId() {
         return id;
@@ -56,5 +60,13 @@ public class StudentsGroup {
 
     public void setScheduleCells(Set<ScheduleCell> scheduleCells) {
         this.scheduleCells = scheduleCells;
+    }
+
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

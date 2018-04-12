@@ -1,5 +1,6 @@
 package com.victoria.fargutu.unibook.repository.model.course;
 
+import com.victoria.fargutu.unibook.repository.model.reservation.Reservation;
 import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCell;
 import com.victoria.fargutu.unibook.repository.model.user.User;
 
@@ -25,6 +26,9 @@ public class Course {
 
     @OneToMany(mappedBy = "course")
     private Set<ScheduleCell> scheduleCells;
+
+    @OneToMany(mappedBy = "course")
+    private Set<Reservation> reservations;
 
     public Long getId() {
         return id;
@@ -52,5 +56,13 @@ public class Course {
 
     public void setScheduleCells(Set<ScheduleCell> scheduleCells) {
         this.scheduleCells = scheduleCells;
+    }
+
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

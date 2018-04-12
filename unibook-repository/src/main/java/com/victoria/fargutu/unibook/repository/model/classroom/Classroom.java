@@ -1,6 +1,7 @@
 package com.victoria.fargutu.unibook.repository.model.classroom;
 
 import com.victoria.fargutu.unibook.repository.commons.ClassroomType;
+import com.victoria.fargutu.unibook.repository.model.reservation.Reservation;
 import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCell;
 
 import javax.persistence.*;
@@ -20,6 +21,9 @@ public class Classroom {
 
     @OneToMany(mappedBy = "classroom")
     private Set<ScheduleCell> scheduleCells;
+
+    @OneToMany(mappedBy = "classroom")
+    private Set<Reservation> reservations;
 
     public Long getId() {
         return id;
@@ -55,5 +59,13 @@ public class Classroom {
 
     public void setScheduleCells(Set<ScheduleCell> scheduleCells) {
         this.scheduleCells = scheduleCells;
+    }
+
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }
