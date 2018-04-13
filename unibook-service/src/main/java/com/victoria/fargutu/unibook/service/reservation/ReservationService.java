@@ -3,6 +3,8 @@ package com.victoria.fargutu.unibook.service.reservation;
 import com.victoria.fargutu.unibook.repository.model.reservation.Reservation;
 import com.victoria.fargutu.unibook.repository.model.reservation.ReservationResponse;
 
+import java.util.List;
+
 public interface ReservationService {
     ReservationResponse createReservation(Reservation reservation);
 
@@ -10,5 +12,7 @@ public interface ReservationService {
 
     Reservation updateReservation(Long id, Reservation reservation);
 
-    void deleteById(Long id);
+    void deleteReservationById(Long id);
+
+    List<ReservationResponse> getReservationsByUserId(Long id);
 }

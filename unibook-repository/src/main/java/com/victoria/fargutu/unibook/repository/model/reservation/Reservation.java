@@ -26,6 +26,7 @@ public class Reservation {
     @JoinColumn(name = "studentsGroup_id")
     private StudentsGroup studentsGroup;
 
+    @Enumerated(EnumType.STRING)
     private Subgroup subgroup;
 
     @ManyToOne
@@ -36,8 +37,10 @@ public class Reservation {
     @JoinColumn(name = "course_id")
     private Course course;
 
+    @Enumerated(EnumType.STRING)
     private WeekType weekType;
 
+    @Enumerated(EnumType.STRING)
     private Day day;
 
     private Date date;
