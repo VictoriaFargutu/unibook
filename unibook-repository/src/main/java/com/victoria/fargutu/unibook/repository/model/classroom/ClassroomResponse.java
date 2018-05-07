@@ -4,12 +4,14 @@ import com.victoria.fargutu.unibook.repository.commons.ClassroomType;
 
 public class ClassroomResponse {
     private Long id;
+    private String name;
     private ClassroomType type;
     private int capacity;
     private boolean hasProjector;
 
     public ClassroomResponse(Classroom classroom) {
         this.id = classroom.getId();
+        this.name = classroom.getName();
         this.type = classroom.getType();
         this.capacity = classroom.getCapacity();
         this.hasProjector = classroom.isHasProjector();
@@ -17,6 +19,14 @@ public class ClassroomResponse {
 
     public Long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public ClassroomType getType() {

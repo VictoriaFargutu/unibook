@@ -3,7 +3,6 @@ package com.victoria.fargutu.unibook.repository.model.auth;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 
 @Entity
 public class AuthSession {
@@ -15,8 +14,6 @@ public class AuthSession {
     private String sessionToken;
     private Long expirationTime;
     private Long userId;
-
-    @Transient
 
     public Long getId() {
         return id;

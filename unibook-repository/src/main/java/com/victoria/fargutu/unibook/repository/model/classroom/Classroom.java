@@ -13,6 +13,8 @@ public class Classroom {
     @GeneratedValue
     private Long id;
 
+    private String name;
+
     @Enumerated(EnumType.STRING)
     private ClassroomType type;
 
@@ -27,6 +29,14 @@ public class Classroom {
 
     public Long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public ClassroomType getType() {

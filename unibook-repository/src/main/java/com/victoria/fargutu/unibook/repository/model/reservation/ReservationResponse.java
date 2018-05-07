@@ -1,35 +1,31 @@
 package com.victoria.fargutu.unibook.repository.model.reservation;
 
 import com.victoria.fargutu.unibook.repository.commons.Day;
-import com.victoria.fargutu.unibook.repository.commons.Hour;
 import com.victoria.fargutu.unibook.repository.commons.WeekType;
 import com.victoria.fargutu.unibook.repository.model.classroom.ClassroomResponse;
 import com.victoria.fargutu.unibook.repository.model.course.CourseResponse;
 import com.victoria.fargutu.unibook.repository.model.studentsGroup.StudentsGroupResponse;
-import com.victoria.fargutu.unibook.repository.model.user.UserResponse;
-
-import java.util.Date;
 
 public class ReservationResponse {
     private Long id;
-    private UserResponse user;
+    //    private UserResponse user;
     private StudentsGroupResponse studentsGroup;
     private ClassroomResponse classroom;
     private CourseResponse course;
     private WeekType weekType;
     private Day day;
-    private Date date;
+    private String date;
     private String hour;
 
     public ReservationResponse(Reservation reservation) {
         this.id = reservation.getId();
-        this.user = new UserResponse(reservation.getUser());
+//        this.user = new UserResponse(reservation.getUser());
         this.studentsGroup = new StudentsGroupResponse(reservation.getStudentsGroup());
         this.classroom = new ClassroomResponse(reservation.getClassroom());
         this.course = new CourseResponse(reservation.getCourse());
         this.weekType = reservation.getWeekType();
         this.day = reservation.getDay();
-        this.date = reservation.getDate();
+        this.date = "" + reservation.getDate().getTime();
         this.hour = reservation.getHour();
     }
 
@@ -41,13 +37,13 @@ public class ReservationResponse {
         this.id = id;
     }
 
-    public UserResponse getUser() {
-        return user;
-    }
-
-    public void setUser(UserResponse user) {
-        this.user = user;
-    }
+//    public UserResponse getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(UserResponse user) {
+//        this.user = user;
+//    }
 
     public StudentsGroupResponse getStudentsGroup() {
         return studentsGroup;
@@ -89,11 +85,11 @@ public class ReservationResponse {
         this.day = day;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
