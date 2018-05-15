@@ -6,6 +6,8 @@ import com.victoria.fargutu.unibook.repository.model.classroom.ClassroomResponse
 import com.victoria.fargutu.unibook.repository.model.course.CourseResponse;
 import com.victoria.fargutu.unibook.repository.model.studentsGroup.StudentsGroupResponse;
 
+import java.util.Date;
+
 public class ReservationResponse {
     private Long id;
     //    private UserResponse user;
@@ -14,7 +16,7 @@ public class ReservationResponse {
     private CourseResponse course;
     private WeekType weekType;
     private Day day;
-    private String date;
+    private Date date;
     private String hour;
 
     public ReservationResponse(Reservation reservation) {
@@ -25,7 +27,7 @@ public class ReservationResponse {
         this.course = new CourseResponse(reservation.getCourse());
         this.weekType = reservation.getWeekType();
         this.day = reservation.getDay();
-        this.date = "" + reservation.getDate().getTime();
+        this.date = reservation.getDate();
         this.hour = reservation.getHour();
     }
 
@@ -85,11 +87,11 @@ public class ReservationResponse {
         this.day = day;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

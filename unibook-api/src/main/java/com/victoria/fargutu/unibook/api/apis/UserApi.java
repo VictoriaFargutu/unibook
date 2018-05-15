@@ -2,8 +2,8 @@ package com.victoria.fargutu.unibook.api.apis;
 
 import com.victoria.fargutu.unibook.repository.commons.UserRole;
 import com.victoria.fargutu.unibook.repository.model.user.User;
-import com.victoria.fargutu.unibook.service.user.UserService;
 import com.victoria.fargutu.unibook.service.security.HasRole;
+import com.victoria.fargutu.unibook.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +17,7 @@ public class UserApi {
         this.userService = userService;
     }
 
-    @RequestMapping(path = "/", method = RequestMethod.GET)
-    public String helloWorld() {
-        return "Hello World!";
-    }
-
-    //@HasRole(UserRole.ADMIN)
+    @HasRole(UserRole.ADMIN)
     @RequestMapping(method = RequestMethod.POST)
     public User createUser(@RequestBody User user) {
         return userService.createUser(user);
