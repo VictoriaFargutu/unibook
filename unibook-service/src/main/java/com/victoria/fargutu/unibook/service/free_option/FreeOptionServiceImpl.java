@@ -44,11 +44,7 @@ public class FreeOptionServiceImpl implements FreeOptionService {
         List<FreeOptionCell> freeOptionCells = freeOptionCellRepository.findAllByClassroom(classroom);
 
         Calendar calendar = Calendar.getInstance();
-        Date currentTime = calendar.getTime();
 
-        //verific ziua
-        //verific ora
-        //pentru aceasta zi, afisez doar disponibilitatile de dupa ora curenta
         WeekType currentWeekType = calculateWeekType();
         List<WeekType> weekTypes = new ArrayList<>();
         weekTypes.add(currentWeekType);
@@ -69,7 +65,6 @@ public class FreeOptionServiceImpl implements FreeOptionService {
         days.put(Day.SATURDAY, 6);
         days.put(Day.SUNDAY, 7);
 
-//        Day currentDay = days.get(calendar.get(Calendar.DAY_OF_WEEK));
         Day freeOptionCellDay;
         Day tempDay = freeOptionCells.get(0).getDay();
         int count = 0;
@@ -86,14 +81,11 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                     if (currentDay.name().equals(freeOptionCell.getDay().name()) && (currentHour >= Integer.valueOf(freeOptionCell.getHour().substring(0, 2)))) {
                         continue;
                     }
-                    //TODO define a dictionary for days!!!
-                    //incepe de la ziua curenta
-                    //schimba data cand se schimba ziua
                     count++;
                     FreeOption freeOption = new FreeOption();
                     freeOption.setClassroom(new ClassroomResponse(freeOptionCell.getClassroom()));
                     freeOption.setWeekType(freeOptionCell.getWeekType());
-                    //TODO set DATE
+
                     if (count > 1 && !tempDay.equals(freeOptionCellDay)) {
                         calendar.add(Calendar.DATE, 1);
                         freeOption.setDate(calendar.getTime());
