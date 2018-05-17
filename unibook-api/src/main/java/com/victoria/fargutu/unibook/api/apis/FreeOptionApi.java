@@ -23,7 +23,7 @@ public class FreeOptionApi {
 
     @GetMapping("/classrooms")
     public List<FreeOption> getAllFreeOptionsByClassroom(@RequestParam("classroomId") Long classroomId) {
-        freeOptionCellService.addFreeOptioncells();
+        //freeOptionCellService.addFreeOptioncells();
         return freeOptionService.getAllFreeOptionsByClassroom(classroomId);
     }
 }

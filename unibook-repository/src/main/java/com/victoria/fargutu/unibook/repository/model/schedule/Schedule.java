@@ -5,6 +5,7 @@ import com.victoria.fargutu.unibook.repository.model.Faculty.Faculty;
 import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCell;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -15,6 +16,8 @@ public class Schedule {
 
     @Enumerated(EnumType.STRING)
     private Semester semester;
+
+    private Date semesterStartDate;
 
     @ManyToOne
     @JoinColumn(name = "faculty_id")
@@ -41,6 +44,14 @@ public class Schedule {
 
     public void setSemester(Semester semester) {
         this.semester = semester;
+    }
+
+    public Date getSemesterStartDate() {
+        return semesterStartDate;
+    }
+
+    public void setSemesterStartDate(Date semesterStartDate) {
+        this.semesterStartDate = semesterStartDate;
     }
 
     public Faculty getFaculty() {

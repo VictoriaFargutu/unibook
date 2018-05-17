@@ -28,10 +28,6 @@ public class FreeOptionCellServiceImpl implements FreeOptionCellService {
 
     @Override
     public void addFreeOptioncells() {
-//        List<WeekType> weekTypes = new ArrayList<>();
-//        weekTypes.add(WeekType.ODD_WEEK);
-//        weekTypes.add(WeekType.EVEN_WEEK);
-
         WeekType[] weekTypes = WeekType.values();
         Day[] days = Day.values();
         List<String> hours = new ArrayList<>();
