@@ -1,7 +1,7 @@
 package com.victoria.fargutu.unibook.repository.commons;
 
 public class Hour {
-    public static final String EIGHT_TO_TEN = "8,00-9,50";
+    public static final String EIGHT_TO_TEN = "08,00-9,50";
     public static final String TEN_TO_TWELVE = "10,00-11,50";
     public static final String TWELVE_TO_FOURTEEN = "12,00-13,50";
     public static final String FOURTEEN_TO_SIXTEEN = "14,00-15,50";

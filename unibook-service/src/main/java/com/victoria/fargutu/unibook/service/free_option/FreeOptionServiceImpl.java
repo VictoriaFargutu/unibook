@@ -17,10 +17,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Weeks;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class FreeOptionServiceImpl implements FreeOptionService {
@@ -61,26 +58,54 @@ public class FreeOptionServiceImpl implements FreeOptionService {
             weekTypes.add(WeekType.ODD_WEEK);
         }
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-        String currentDay = initializeCurrentDay(calendar);
+        Day currentDay = initializeCurrentDay(calendar);
+        Map<Day, Integer> days = new HashMap<>();
 
+        days.put(Day.MONDAY, 1);
+        days.put(Day.TUESDAY, 2);
+        days.put(Day.WEDNESDAY, 3);
+        days.put(Day.THURSDAY, 4);
+        days.put(Day.FRIDAY, 5);
+        days.put(Day.SATURDAY, 6);
+        days.put(Day.SUNDAY, 7);
 
+//        Day currentDay = days.get(calendar.get(Calendar.DAY_OF_WEEK));
+        Day freeOptionCellDay;
+        Day tempDay = freeOptionCells.get(0).getDay();
+        int count = 0;
         for (WeekType weekType : weekTypes) {
             for (FreeOptionCell freeOptionCell : freeOptionCells) {
+
+                freeOptionCellDay = freeOptionCell.getDay();
+
                 if (freeOptionCell.getWeekType().equals(weekType)) {
-                    if (currentDay.equals(freeOptionCell.getDay().name()) && (currentHour >= Integer.valueOf(freeOptionCell.getHour().substring(0, 2)))) {
+                    if (freeOptionCell.getWeekType().equals(weekTypes.get(0)) && days.get(currentDay) > days.get(freeOptionCellDay)) {
                         continue;
                     }
+
+                    if (currentDay.name().equals(freeOptionCell.getDay().name()) && (currentHour >= Integer.valueOf(freeOptionCell.getHour().substring(0, 2)))) {
+                        continue;
+                    }
+                    //TODO define a dictionary for days!!!
+                    //incepe de la ziua curenta
+                    //schimba data cand se schimba ziua
+                    count++;
                     FreeOption freeOption = new FreeOption();
                     freeOption.setClassroom(new ClassroomResponse(freeOptionCell.getClassroom()));
                     freeOption.setWeekType(freeOptionCell.getWeekType());
                     //TODO set DATE
+                    if (count > 1 && !tempDay.equals(freeOptionCellDay)) {
+                        calendar.add(Calendar.DATE, 1);
+                        freeOption.setDate(calendar.getTime());
+                        tempDay = freeOptionCellDay;
+                    }
                     freeOption.setDate(calendar.getTime());
-                    calendar.add(Calendar.DATE, 1);
-
+                    if (freeOptionCellDay.equals(currentDay)) {
+                        tempDay = freeOptionCellDay;
+                    }
                     freeOption.setDay(freeOptionCell.getDay());
                     freeOption.setHour(freeOptionCell.getHour());
-//            freeOption.setStudentsGroup(new StudentsGroupResponse(freeOptionCell.getStudentsGroup()));
-//            freeOption.setSubgroup(freeOptionCell.getSubgroup());
+
                     freeOptions.add(freeOption);
                 }
             }
@@ -110,25 +135,26 @@ public class FreeOptionServiceImpl implements FreeOptionService {
         return currentWeekType;
     }
 
-    private String initializeCurrentDay(Calendar calendar) {
-        String currentDay = "";
+    private Day initializeCurrentDay(Calendar calendar) {
+        Day currentDay = null;
         int currentIntDay = calendar.get(Calendar.DAY_OF_WEEK);
         if (currentIntDay == 1) {
-            currentDay = Day.MONDAY.name();
+            currentDay = Day.SUNDAY;
         } else if (currentIntDay == 2) {
-            currentDay = Day.TUESDAY.name();
+            currentDay = Day.MONDAY;
         } else if (currentIntDay == 3) {
-            currentDay = Day.WEDNESDAY.name();
+            currentDay = Day.TUESDAY;
         } else if (currentIntDay == 4) {
-            currentDay = Day.THURSDAY.name();
+            currentDay = Day.WEDNESDAY;
         } else if (currentIntDay == 5) {
-            currentDay = Day.FRIDAY.name();
+            currentDay = Day.THURSDAY;
         } else if (currentIntDay == 6) {
-            currentDay = Day.SATURDAY.name();
+            currentDay = Day.FRIDAY;
         } else if (currentIntDay == 7) {
-            currentDay = Day.SUNDAY.name();
+            currentDay = Day.SATURDAY;
         }
 
         return currentDay;
+
     }
 }
