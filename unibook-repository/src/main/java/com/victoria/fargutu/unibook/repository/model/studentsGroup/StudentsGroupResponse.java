@@ -1,10 +1,12 @@
 package com.victoria.fargutu.unibook.repository.model.studentsGroup;
 
+import com.victoria.fargutu.unibook.repository.commons.Specialization;
+
 public class StudentsGroupResponse {
     private Long id;
     private String name;
     private String year;
-    private String specialization;
+    private Specialization specialization;
 
     public StudentsGroupResponse(StudentsGroup studentsGroup) {
         this.id = studentsGroup.getId();
@@ -33,11 +35,11 @@ public class StudentsGroupResponse {
         this.year = year;
     }
 
-    public String getSpecialization() {
+    public Specialization getSpecialization() {
         return specialization;
     }
 
-    public void setSpecialization(String specialization) {
+    public void setSpecialization(Specialization specialization) {
         this.specialization = specialization;
     }
 }

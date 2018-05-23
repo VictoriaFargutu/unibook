@@ -1,12 +1,10 @@
 package com.victoria.fargutu.unibook.repository.model.studentsGroup;
 
+import com.victoria.fargutu.unibook.repository.commons.Specialization;
 import com.victoria.fargutu.unibook.repository.model.reservation.Reservation;
 import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCell;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
@@ -18,7 +16,9 @@ public class StudentsGroup {
 
     private String name;
     private String year;
-    private String specialization;
+
+    @Enumerated(EnumType.STRING)
+    private Specialization specialization;
 
     @OneToMany(mappedBy = "studentsGroup")
     private Set<ScheduleCell> scheduleCells;
@@ -46,11 +46,11 @@ public class StudentsGroup {
         this.year = year;
     }
 
-    public String getSpecialization() {
+    public Specialization getSpecialization() {
         return specialization;
     }
 
-    public void setSpecialization(String specialization) {
+    public void setSpecialization(Specialization specialization) {
         this.specialization = specialization;
     }
 
