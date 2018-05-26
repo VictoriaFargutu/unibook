@@ -7,6 +7,7 @@ import com.victoria.fargutu.unibook.repository.db.ClassroomRepository;
 import com.victoria.fargutu.unibook.repository.db.FreeOptionCellRepository;
 import com.victoria.fargutu.unibook.repository.db.ScheduleCellRepository;
 import com.victoria.fargutu.unibook.repository.db.ScheduleRepository;
+import com.victoria.fargutu.unibook.repository.model.Filter;
 import com.victoria.fargutu.unibook.repository.model.classroom.Classroom;
 import com.victoria.fargutu.unibook.repository.model.classroom.ClassroomResponse;
 import com.victoria.fargutu.unibook.repository.model.free_option.FreeOption;
@@ -34,15 +35,83 @@ public class FreeOptionServiceImpl implements FreeOptionService {
     }
 
     @Override
+    public List<FreeOption> getAllFreeOptions() {
+        List<FreeOptionCell> freeOptionCells = freeOptionCellRepository.findAll();
+        return getFreeOptions(freeOptionCells);
+    }
+
+    @Override
     public List<FreeOption> getAllFreeOptionsByClassroom(Long classroomId) {
         Classroom classroom = classroomRepository.findOne(classroomId);
         if (classroom == null) {
             throw new NotFoundException("Classroom Not Found!");
         }
-        List<FreeOption> freeOptions = new ArrayList<>();
 
         List<FreeOptionCell> freeOptionCells = freeOptionCellRepository.findAllByClassroom(classroom);
 
+        return getFreeOptions(freeOptionCells);
+    }
+
+    @Override
+    public List<FreeOption> getAllFreeOptionsByFilter(Filter filter) {
+        List<FreeOptionCell> freeOptionCells = new ArrayList<>();
+        List<FreeOption> freeOptions = new ArrayList<>();
+
+        Classroom classroom = filter.getClassroom();
+        Day day = filter.getDay();
+        String hour = filter.getHour();
+        WeekType weekType = filter.getWeekType();
+
+        if (classroom != null) {
+            classroom = classroomRepository.findOne(classroom.getId());
+            if (classroom == null) {
+                throw new NotFoundException("Classroom Not Found!");
+            }
+            freeOptionCells = freeOptionCellRepository.findAllByClassroom(classroom);
+        }
+        if (day != null) {
+            freeOptionCells.addAll(freeOptionCellRepository.findAllByDay(day));
+
+            for (FreeOptionCell freeOptionCell : freeOptionCells) {
+                if (!freeOptionCell.getDay().equals(day)) {
+                    freeOptionCells.remove(freeOptionCell);
+                }
+            }
+        }
+        if (hour != null) {
+            freeOptionCells.addAll(freeOptionCellRepository.findAllByHour(hour));
+
+            for (FreeOptionCell freeOptionCell : freeOptionCells) {
+                if (!freeOptionCell.getHour().equals(hour)) {
+                    freeOptionCells.remove(freeOptionCell);
+                }
+            }
+        }
+        if (weekType != null) {
+            freeOptionCells.addAll(freeOptionCellRepository.findAllByWeekType(weekType));
+
+            for (FreeOptionCell freeOptionCell : freeOptionCells) {
+                if (!freeOptionCell.getWeekType().equals(weekType)) {
+                    freeOptionCells.remove(freeOptionCell);
+                }
+            }
+        }
+        if (freeOptionCells.size() == 0) {
+            freeOptionCells = freeOptionCellRepository.findAll();
+            freeOptions = getFreeOptions(freeOptionCells);
+        }
+
+        if (classroom == null) {
+            for (FreeOptionCell freeOptionCell : freeOptionCells) {
+
+            }
+        }
+
+        return freeOptions;
+    }
+
+    public List<FreeOption> getFreeOptions(List<FreeOptionCell> freeOptionCells) {
+        List<FreeOption> freeOptions = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
 
         WeekType currentWeekType = calculateWeekType();
@@ -102,8 +171,6 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                 }
             }
         }
-
-
         return freeOptions;
     }
 
@@ -149,4 +216,5 @@ public class FreeOptionServiceImpl implements FreeOptionService {
         return currentDay;
 
     }
+
 }
