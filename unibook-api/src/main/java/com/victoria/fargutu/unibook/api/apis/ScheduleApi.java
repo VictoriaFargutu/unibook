@@ -1,7 +1,9 @@
 package com.victoria.fargutu.unibook.api.apis;
 
+import com.victoria.fargutu.unibook.repository.commons.UserRole;
 import com.victoria.fargutu.unibook.repository.model.schedule.Schedule;
 import com.victoria.fargutu.unibook.service.schedule.ScheduleService;
+import com.victoria.fargutu.unibook.service.security.HasRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,7 @@ public class ScheduleApi {
         this.scheduleService = scheduleService;
     }
 
+    @HasRole(UserRole.ADMIN)
     @RequestMapping(method = RequestMethod.POST)
     public Schedule createSchedule(@RequestBody Schedule schedule) {
         return scheduleService.createSchedule(schedule);

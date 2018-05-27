@@ -1,7 +1,9 @@
 package com.victoria.fargutu.unibook.api.apis;
 
+import com.victoria.fargutu.unibook.repository.commons.UserRole;
 import com.victoria.fargutu.unibook.repository.model.studentsGroup.StudentsGroupResponse;
 import com.victoria.fargutu.unibook.service.group.StudentsGroupService;
+import com.victoria.fargutu.unibook.service.security.HasRole;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +19,7 @@ public class StudentsGroupApi {
         this.studentsGroupService = studentsGroupService;
     }
 
+    @HasRole(UserRole.USER)
     @GetMapping
     public List<StudentsGroupResponse> getAllStudentsGroups() {
         return studentsGroupService.getAllStudentsGroups();

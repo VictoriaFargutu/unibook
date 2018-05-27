@@ -1,5 +1,6 @@
-package com.victoria.fargutu.unibook.repository.model.auth;
+package com.victoria.fargutu.unibook.repository.model;
 
+import com.victoria.fargutu.unibook.repository.model.auth.AuthSession;
 import com.victoria.fargutu.unibook.repository.model.user.User;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;

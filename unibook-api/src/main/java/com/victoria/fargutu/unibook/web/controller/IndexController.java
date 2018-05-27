@@ -1,7 +1,7 @@
 package com.victoria.fargutu.unibook.web.controller;
 
 import com.victoria.fargutu.unibook.repository.commons.UserRole;
-import com.victoria.fargutu.unibook.repository.model.auth.AuthManager;
+import com.victoria.fargutu.unibook.repository.model.AuthManager;
 import com.victoria.fargutu.unibook.service.security.HasRole;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

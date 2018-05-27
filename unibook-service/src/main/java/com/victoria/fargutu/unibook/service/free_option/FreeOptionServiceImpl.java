@@ -148,6 +148,9 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                     }
 
                     if (currentDay.name().equals(freeOptionCell.getDay().name()) && (currentHour >= Integer.valueOf(freeOptionCell.getHour().substring(0, 2)))) {
+                        if (currentHour < 24 && freeOptionCell.getHour().substring(0, 2).equals("08")) {
+                            calendar.add(Calendar.DATE, 1);
+                        }
                         continue;
                     }
                     count++;

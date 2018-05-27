@@ -2,7 +2,7 @@ package com.victoria.fargutu.unibook.service.auth;
 
 import com.victoria.fargutu.unibook.repository.db.SessionRepository;
 import com.victoria.fargutu.unibook.repository.db.UserRepository;
-import com.victoria.fargutu.unibook.repository.model.auth.AuthManager;
+import com.victoria.fargutu.unibook.repository.model.AuthManager;
 import com.victoria.fargutu.unibook.repository.model.auth.AuthSession;
 import com.victoria.fargutu.unibook.repository.model.auth.Credentials;
 import com.victoria.fargutu.unibook.repository.model.user.User;

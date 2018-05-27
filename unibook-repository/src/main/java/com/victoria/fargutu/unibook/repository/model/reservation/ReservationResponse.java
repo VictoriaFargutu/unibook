@@ -5,12 +5,12 @@ import com.victoria.fargutu.unibook.repository.commons.WeekType;
 import com.victoria.fargutu.unibook.repository.model.classroom.ClassroomResponse;
 import com.victoria.fargutu.unibook.repository.model.course.CourseResponse;
 import com.victoria.fargutu.unibook.repository.model.studentsGroup.StudentsGroupResponse;
+import com.victoria.fargutu.unibook.repository.model.user.UserResponse;
 
 import java.util.Date;
 
 public class ReservationResponse {
     private Long id;
-    //    private UserResponse user;
     private StudentsGroupResponse studentsGroup;
     private ClassroomResponse classroom;
     private CourseResponse course;
@@ -18,13 +18,26 @@ public class ReservationResponse {
     private Day day;
     private Date date;
     private String hour;
+    private UserResponse user;
 
     public ReservationResponse(Reservation reservation) {
         this.id = reservation.getId();
-//        this.user = new UserResponse(reservation.getUser());
-        this.studentsGroup = new StudentsGroupResponse(reservation.getStudentsGroup());
-        this.classroom = new ClassroomResponse(reservation.getClassroom());
-        this.course = new CourseResponse(reservation.getCourse());
+        this.user = new UserResponse(reservation.getUser());
+        if (reservation.getStudentsGroup() != null) {
+            this.studentsGroup = new StudentsGroupResponse(reservation.getStudentsGroup());
+        } else {
+            this.studentsGroup = null;
+        }
+        if (reservation.getClassroom() != null) {
+            this.classroom = new ClassroomResponse(reservation.getClassroom());
+        } else {
+            this.classroom = null;
+        }
+        if (reservation.getCourse() != null) {
+            this.course = new CourseResponse(reservation.getCourse());
+        } else {
+            this.course = null;
+        }
         this.weekType = reservation.getWeekType();
         this.day = reservation.getDay();
         this.date = reservation.getDate();
@@ -38,14 +51,6 @@ public class ReservationResponse {
     public void setId(Long id) {
         this.id = id;
     }
-
-//    public UserResponse getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(UserResponse user) {
-//        this.user = user;
-//    }
 
     public StudentsGroupResponse getStudentsGroup() {
         return studentsGroup;
@@ -101,5 +106,13 @@ public class ReservationResponse {
 
     public void setHour(String hour) {
         this.hour = hour;
+    }
+
+    public UserResponse getUser() {
+        return user;
+    }
+
+    public void setUser(UserResponse user) {
+        this.user = user;
     }
 }

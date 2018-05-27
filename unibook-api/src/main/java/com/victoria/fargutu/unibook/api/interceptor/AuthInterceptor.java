@@ -1,7 +1,7 @@
 package com.victoria.fargutu.unibook.api.interceptor;
 
 import com.victoria.fargutu.unibook.repository.commons.UserRole;
-import com.victoria.fargutu.unibook.repository.model.auth.AuthManager;
+import com.victoria.fargutu.unibook.repository.model.AuthManager;
 import com.victoria.fargutu.unibook.repository.model.auth.AuthSession;
 import com.victoria.fargutu.unibook.repository.model.user.User;
 import com.victoria.fargutu.unibook.service.auth.AuthService;

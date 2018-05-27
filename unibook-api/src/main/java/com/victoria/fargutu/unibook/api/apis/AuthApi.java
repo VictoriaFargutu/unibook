@@ -1,7 +1,7 @@
 package com.victoria.fargutu.unibook.api.apis;
 
 import com.victoria.fargutu.unibook.repository.commons.UserRole;
-import com.victoria.fargutu.unibook.repository.model.auth.AuthManager;
+import com.victoria.fargutu.unibook.repository.model.AuthManager;
 import com.victoria.fargutu.unibook.repository.model.auth.AuthSession;
 import com.victoria.fargutu.unibook.repository.model.auth.AuthSessionResponse;
 import com.victoria.fargutu.unibook.repository.model.user.UserResponse;
@@ -40,5 +40,11 @@ public class AuthApi {
         AuthSession authSession = authService.verifyCredentials(authToken);
         UserResponse user = new UserResponse(userService.getUserById(authSession.getUserId()));
         return new AuthSessionResponse(authSession.getSessionToken(), user);
+    }
+
+    @HasRole(UserRole.USER)
+    @RequestMapping(path = "/logout", method = RequestMethod.POST)
+    public void logout() {
+        authService.logout();
     }
 }
