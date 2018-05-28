@@ -9,10 +9,7 @@ import com.victoria.fargutu.unibook.service.auth.AuthService;
 import com.victoria.fargutu.unibook.service.security.HasRole;
 import com.victoria.fargutu.unibook.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/auth")
@@ -46,5 +43,11 @@ public class AuthApi {
     @RequestMapping(path = "/logout", method = RequestMethod.POST)
     public void logout() {
         authService.logout();
+    }
+
+    @HasRole(UserRole.USER)
+    @PutMapping
+    public UserResponse resetPassword(@RequestParam("newPassword") String newPassword) {
+        return authService.resetPassword(newPassword);
     }
 }

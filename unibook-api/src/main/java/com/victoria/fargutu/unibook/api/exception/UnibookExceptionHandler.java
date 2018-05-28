@@ -33,6 +33,11 @@ public class UnibookExceptionHandler {
 
             return ResponseEntity.status(401).body(exceptionInfo);
         }
+        if (exception.getExceptionType().equals(ExceptionType.CLASSROOM_NOT_FREE)) {
+            ExceptionInfo exceptionInfo = new ExceptionInfo(exception.getExceptionType(), exception.getMessage());
+
+            return ResponseEntity.status(400).body(exceptionInfo);
+        }
         return null;
     }
 

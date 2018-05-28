@@ -5,6 +5,7 @@ import com.victoria.fargutu.unibook.repository.model.course.CourseResponse;
 import com.victoria.fargutu.unibook.service.course.CourseService;
 import com.victoria.fargutu.unibook.service.security.HasRole;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +23,12 @@ public class CourseApi {
     @HasRole(UserRole.USER)
     @GetMapping(value = "/all")
     public List<CourseResponse> getAll() {
+        return courseService.getAll();
+    }
+
+    @HasRole(UserRole.USER)
+    @GetMapping(value = "/{id}")
+    public List<CourseResponse> getAll(@PathVariable("id") Long id) {
         return courseService.getAll();
     }
 }

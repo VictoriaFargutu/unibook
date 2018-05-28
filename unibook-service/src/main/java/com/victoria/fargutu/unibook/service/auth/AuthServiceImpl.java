@@ -6,7 +6,11 @@ import com.victoria.fargutu.unibook.repository.model.AuthManager;
 import com.victoria.fargutu.unibook.repository.model.auth.AuthSession;
 import com.victoria.fargutu.unibook.repository.model.auth.Credentials;
 import com.victoria.fargutu.unibook.repository.model.user.User;
+import com.victoria.fargutu.unibook.repository.model.user.UserResponse;
+import com.victoria.fargutu.unibook.service.commons.Constant;
+import com.victoria.fargutu.unibook.service.commons.Field;
 import com.victoria.fargutu.unibook.service.exceptions.InvalidCredentialsException;
+import com.victoria.fargutu.unibook.service.exceptions.InvalidFieldException;
 import com.victoria.fargutu.unibook.service.exceptions.UnauthorizedException;
 import com.victoria.fargutu.unibook.service.security.EncryptionManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,18 +50,6 @@ public class AuthServiceImpl implements AuthService {
         authSession.setUserId(user.getId());
         return sessionRepository.save(authSession);
     }
-//
-//
-//    @Override
-//    public AuthSession getAuthSessionByToken(String token) {
-//        return sessionRepository.findBySessionToken(token);
-//    }
-//
-//    @Override
-//    public void deleteSessionById(Long id) {
-//        sessionRepository.delete(id);
-//    }
-
 
     @Override
     public AuthSession validateToken(String token) {
@@ -112,5 +104,17 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void logout() {
         sessionRepository.delete(authManager.getAuthSession());
+    }
+
+    @Override
+    public UserResponse resetPassword(String newPassword) {
+        String decryptedData = encryptionManager.decrypt(newPassword);
+        if (!decryptedData.matches(Constant.PASSWORD_PATTERN)) {
+            throw new InvalidFieldException("Password is not valid. Needs to have at least 8 characters, a letter, a digit and no whitespace.", Field.PASSWORD);
+        }
+        User user = userRepository.findOne(authManager.getLoggedInUser().getId());
+        user.setPassword(encryptionManager.encrypt(decryptedData));
+        UserResponse userResponse = new UserResponse(userRepository.save(user));
+        return userResponse;
     }
 }
