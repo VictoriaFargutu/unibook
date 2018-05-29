@@ -28,6 +28,7 @@ public class ReservationServiceImpl implements ReservationService {
         this.authManager = authManager;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public ReservationResponse createReservation(Reservation reservation) {
         //TODO if is possible then make reservation
@@ -59,7 +60,9 @@ public class ReservationServiceImpl implements ReservationService {
                 if (calendar.getTime().equals(calendarMyReservation.getTime())) {
                     if (tempReservation.getHour().equals(reservation.getHour())) {
                         if (tempReservation.getWeekType().equals(reservation.getWeekType())) {
-                            throw new ClassroomNotFreeException();
+                            if (tempReservation.getClassroom().equals(reservation.getClassroom())) {
+                                throw new ClassroomNotFreeException();
+                            }
                         }
                     }
                 }

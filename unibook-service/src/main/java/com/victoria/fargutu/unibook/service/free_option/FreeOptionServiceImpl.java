@@ -1,8 +1,6 @@
 package com.victoria.fargutu.unibook.service.free_option;
 
-import com.victoria.fargutu.unibook.repository.commons.Day;
-import com.victoria.fargutu.unibook.repository.commons.Semester;
-import com.victoria.fargutu.unibook.repository.commons.WeekType;
+import com.victoria.fargutu.unibook.repository.commons.*;
 import com.victoria.fargutu.unibook.repository.db.ClassroomRepository;
 import com.victoria.fargutu.unibook.repository.db.FreeOptionCellRepository;
 import com.victoria.fargutu.unibook.repository.db.ScheduleCellRepository;
@@ -13,6 +11,9 @@ import com.victoria.fargutu.unibook.repository.model.classroom.ClassroomResponse
 import com.victoria.fargutu.unibook.repository.model.free_option.FreeOption;
 import com.victoria.fargutu.unibook.repository.model.free_option_cell.FreeOptionCell;
 import com.victoria.fargutu.unibook.repository.model.schedule.Schedule;
+import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCell;
+import com.victoria.fargutu.unibook.repository.model.studentsGroup.StudentsGroup;
+import com.victoria.fargutu.unibook.repository.model.studentsGroup.StudentsGroupResponse;
 import com.victoria.fargutu.unibook.service.exceptions.NotFoundException;
 import org.joda.time.DateTime;
 import org.joda.time.Weeks;
@@ -110,12 +111,14 @@ public class FreeOptionServiceImpl implements FreeOptionService {
 //        return freeOptions;
 //    }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public List<FreeOption> getAllFreeOptionsByFilter(Filter filter) {
         List<FreeOptionCell> freeOptionCells = new ArrayList<>();
         List<FreeOption> freeOptions = new ArrayList<>();
 
         Classroom classroom = filter.getClassroom();
+        ClassroomType classroomType = filter.getClassroomType();
         Day day = filter.getDay();
         String hour = filter.getHour();
         WeekType weekType = filter.getWeekType();
@@ -128,12 +131,23 @@ public class FreeOptionServiceImpl implements FreeOptionService {
             freeOptionCells = freeOptionCellRepository.findAllByClassroom(classroom);
         }
 
+        if (classroomType != null && !freeOptionCells.isEmpty()) {
+            List<FreeOptionCell> freeOptionCellsClassType = new ArrayList<>();
+            for (FreeOptionCell freeOptionCell : freeOptionCells) {
+                if (freeOptionCell.getClassroom().getType().equals(classroomType)) {
+                    freeOptionCellsClassType.add(freeOptionCell);
+                }
+            }
+            freeOptionCells = freeOptionCellsClassType;
+        } else if (freeOptionCells.isEmpty()) {
+            freeOptionCells = freeOptionCellRepository.findAllByClassroomType(filter.getClassroomType());
+        }
+
         if (day != null && !freeOptionCells.isEmpty()) {
             List<FreeOptionCell> freeOptionCellsDays = new ArrayList<>();
             for (FreeOptionCell freeOptionCell : freeOptionCells) {
                 if (freeOptionCell.getDay().equals(day)) {
                     freeOptionCellsDays.add(freeOptionCell);
-//                    freeOptionCells.remove(freeOptionCell);
                 }
             }
             freeOptionCells = freeOptionCellsDays;
@@ -146,7 +160,6 @@ public class FreeOptionServiceImpl implements FreeOptionService {
             for (FreeOptionCell freeOptionCell : freeOptionCells) {
                 if (freeOptionCell.getHour().equals(hour)) {
                     freeOptionCellsHour.add(freeOptionCell);
-//                    freeOptionCells.remove(freeOptionCell);
                 }
             }
             freeOptionCells = freeOptionCellsHour;
@@ -154,7 +167,7 @@ public class FreeOptionServiceImpl implements FreeOptionService {
             freeOptionCells.addAll(freeOptionCellRepository.findAllByHour(hour));
         }
 
-        if (weekType != null && !freeOptionCells.isEmpty()) {
+        if (filter.getDate() == null && weekType != null && !freeOptionCells.isEmpty()) {
             List<FreeOptionCell> freeOptionCellsWeek = new ArrayList<>();
             for (FreeOptionCell freeOptionCell : freeOptionCells) {
                 if (freeOptionCell.getWeekType().equals(weekType)) {
@@ -166,16 +179,243 @@ public class FreeOptionServiceImpl implements FreeOptionService {
             freeOptionCells.addAll(freeOptionCellRepository.findAllByWeekType(weekType));
         }
 
+        //INITIAL FILTER WITH DATE
+        if (filter.getDate() != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(filter.getDate());
+
+            WeekType currentWeekType = calculateWeekType(calendar);
+            Day dateDay = initializeCurrentDay(calendar);
+
+            //DAY
+            if (day == null && !freeOptionCells.isEmpty()) {
+                List<FreeOptionCell> freeOptionCellsDays = new ArrayList<>();
+                for (FreeOptionCell freeOptionCell : freeOptionCells) {
+                    if (freeOptionCell.getDay().equals(dateDay)) {
+                        freeOptionCellsDays.add(freeOptionCell);
+                    }
+                }
+                freeOptionCells = freeOptionCellsDays;
+            } else if (freeOptionCells.isEmpty()) {
+                freeOptionCells.addAll(freeOptionCellRepository.findAllByDay(dateDay));
+            }
+
+            //WEEK TYPE
+            if (!freeOptionCells.isEmpty()) {
+                List<FreeOptionCell> freeOptionCellsWeek = new ArrayList<>();
+                for (FreeOptionCell freeOptionCell : freeOptionCells) {
+                    if (freeOptionCell.getWeekType().equals(currentWeekType)) {
+                        freeOptionCellsWeek.add(freeOptionCell);
+                    }
+                }
+                freeOptionCells = freeOptionCellsWeek;
+            } else if (freeOptionCells.isEmpty()) {
+                freeOptionCells.addAll(freeOptionCellRepository.findAllByWeekType(currentWeekType));
+            }
+            freeOptions = getFreeOptionsByDate(freeOptionCells, filter);
+        } else{
+            freeOptions = getFreeOptions(freeOptionCells);
+        }
+
         if (freeOptionCells.size() == 0) {
             freeOptionCells = freeOptionCellRepository.findAll();
+            freeOptions = getFreeOptions(freeOptionCells);
         }
-        freeOptions = getFreeOptions(freeOptionCells);
 
-        //TODO  Look in schedule cells
+        List<ScheduleCell> scheduleCells = scheduleCellRepository.findAll();
+        StudentsGroup studentsGroup = filter.getStudentsGroup();
+        Specialization specialization = filter.getSpecialization();
+        String year = filter.getYear();
 
-        if (classroom == null) {
-            for (FreeOptionCell freeOptionCell : freeOptionCells) {
+        if (year != null && studentsGroup == null && specialization == null) {
+            List<FreeOption> freeOptionsByYear = new ArrayList<>();
+            for (FreeOption freeOption : freeOptions) {
+                for (ScheduleCell scheduleCell : scheduleCells) {
+                    if (scheduleCell.getWeekType().equals(freeOption.getWeekType())) {
+                        if (scheduleCell.getDay().equals(freeOption.getDay())) {
+                            if (scheduleCell.getHour().equals(freeOption.getHour())) {
+                                if (scheduleCell.getStudentsGroup().getYear().equals(year)) {
+                                    if (scheduleCells.indexOf(scheduleCell) == scheduleCells.size() - 1) {
+                                        break;
+                                    } else {
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    freeOptionsByYear.add(freeOption);
+                }
+            }
+            freeOptions = freeOptionsByYear;
+        }
 
+        if (specialization != null && studentsGroup == null) {
+            List<FreeOption> freeOptionsBySpecialization = new ArrayList<>();
+            for (FreeOption freeOption : freeOptions) {
+                for (ScheduleCell scheduleCell : scheduleCells) {
+                    if (scheduleCell.getWeekType().equals(freeOption.getWeekType())) {
+                        if (scheduleCell.getDay().equals(freeOption.getDay())) {
+                            if (scheduleCell.getHour().equals(freeOption.getHour())) {
+                                if (scheduleCell.getStudentsGroup().getSpecialization().equals(specialization)) {
+                                    if (scheduleCells.indexOf(scheduleCell) == scheduleCells.size() - 1) {
+                                        break;
+                                    } else {
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    freeOptionsBySpecialization.add(freeOption);
+                }
+            }
+            freeOptions = freeOptionsBySpecialization;
+        }
+
+        if (studentsGroup != null) {
+            List<FreeOption> freeOptionByGroup = new ArrayList<>();
+            for (FreeOption freeOption : freeOptions) {
+                for (ScheduleCell scheduleCell : scheduleCells) {
+                    if (scheduleCell.getWeekType().equals(freeOption.getWeekType())) {
+                        if (scheduleCell.getDay().equals(freeOption.getDay())) {
+                            if (scheduleCell.getHour().equals(freeOption.getHour())) {
+                                if (scheduleCell.getStudentsGroup().equals(studentsGroup)) {
+                                    if (scheduleCells.indexOf(scheduleCell) == scheduleCells.size() - 1) {
+                                        break;
+                                    } else {
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (filter.getSubgroup() != null && scheduleCell.getSubgroup() != null) {
+                        if (scheduleCell.getWeekType().equals(freeOption.getWeekType())) {
+                            if (scheduleCell.getDay().equals(freeOption.getDay())) {
+                                if (scheduleCell.getHour().equals(freeOption.getHour())) {
+                                    if (scheduleCell.getSubgroup().equals(filter.getSubgroup())) {
+                                        if (scheduleCells.indexOf(scheduleCell) == scheduleCells.size() - 1) {
+                                            break;
+                                        } else {
+                                            continue;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    freeOption.setStudentsGroup(new StudentsGroupResponse(studentsGroup));
+                    if (filter.getSubgroup() != null) {
+                        freeOption.setSubgroup(filter.getSubgroup());
+                    }
+                    freeOptionByGroup.add(freeOption);
+                }
+
+            }
+            freeOptions = freeOptionByGroup;
+        }
+
+        return freeOptions;
+    }
+
+    @SuppressWarnings("Duplicates")
+    public List<FreeOption> getFreeOptionsByDate(List<FreeOptionCell> freeOptionCells, Filter filter) {
+        List<FreeOption> freeOptions = new ArrayList<>();
+        List<ScheduleCell> scheduleCells = scheduleCellRepository.findAll();
+        for (FreeOptionCell freeOptionCell : freeOptionCells) {
+            FreeOption freeOption = new FreeOption();
+            freeOption.setClassroom(new ClassroomResponse(freeOptionCell.getClassroom()));
+            freeOption.setWeekType(freeOptionCell.getWeekType());
+            freeOption.setDate(filter.getDate());
+            freeOption.setDay(freeOptionCell.getDay());
+            freeOption.setHour(freeOptionCell.getHour());
+
+            StudentsGroup studentsGroup = filter.getStudentsGroup();
+            Specialization specialization = filter.getSpecialization();
+            String year = filter.getYear();
+
+            if (year != null && studentsGroup == null && specialization == null) {
+                for (ScheduleCell scheduleCell : scheduleCells) {
+                    if (scheduleCell.getWeekType().equals(freeOptionCell.getWeekType())) {
+                        if (scheduleCell.getDay().equals(freeOptionCell.getDay())) {
+                            if (scheduleCell.getHour().equals(freeOptionCell.getHour())) {
+                                if (scheduleCell.getStudentsGroup().getYear().equals(year)) {
+                                    if (scheduleCells.indexOf(scheduleCell) == scheduleCells.size() - 1) {
+                                        break;
+                                    } else {
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    freeOptions.add(freeOption);
+                }
+            } else {
+                freeOptions.add(freeOption);
+            }
+
+            if (specialization != null && studentsGroup == null) {
+                for (ScheduleCell scheduleCell : scheduleCells) {
+                    if (scheduleCell.getWeekType().equals(freeOptionCell.getWeekType())) {
+                        if (scheduleCell.getDay().equals(freeOptionCell.getDay())) {
+                            if (scheduleCell.getHour().equals(freeOptionCell.getHour())) {
+                                if (scheduleCell.getStudentsGroup().getSpecialization().equals(specialization)) {
+                                    if (scheduleCells.indexOf(scheduleCell) == scheduleCells.size() - 1) {
+                                        break;
+                                    } else {
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    freeOptions.add(freeOption);
+                }
+            } else {
+                freeOptions.add(freeOption);
+            }
+
+            if (studentsGroup != null) {
+                for (ScheduleCell scheduleCell : scheduleCells) {
+                    if (scheduleCell.getWeekType().equals(freeOptionCell.getWeekType())) {
+                        if (scheduleCell.getDay().equals(freeOptionCell.getDay())) {
+                            if (scheduleCell.getHour().equals(freeOptionCell.getHour())) {
+                                if (scheduleCell.getStudentsGroup().equals(studentsGroup)) {
+                                    if (scheduleCells.indexOf(scheduleCell) == scheduleCells.size() - 1) {
+                                        break;
+                                    } else {
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (filter.getSubgroup() != null && scheduleCell.getSubgroup() != null) {
+                        if (scheduleCell.getWeekType().equals(freeOptionCell.getWeekType())) {
+                            if (scheduleCell.getDay().equals(freeOptionCell.getDay())) {
+                                if (scheduleCell.getHour().equals(freeOptionCell.getHour())) {
+                                    if (scheduleCell.getSubgroup().equals(filter.getSubgroup())) {
+                                        if (scheduleCells.indexOf(scheduleCell) == scheduleCells.size() - 1) {
+                                            break;
+                                        } else {
+                                            continue;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    freeOption.setStudentsGroup(new StudentsGroupResponse(studentsGroup));
+                    if (filter.getSubgroup() != null) {
+                        freeOption.setSubgroup(filter.getSubgroup());
+                    }
+                    freeOptions.add(freeOption);
+                }
+
+            } else {
+                freeOptions.add(freeOption);
             }
         }
         return freeOptions;
@@ -184,8 +424,9 @@ public class FreeOptionServiceImpl implements FreeOptionService {
     public List<FreeOption> getFreeOptions(List<FreeOptionCell> freeOptionCells) {
         List<FreeOption> freeOptions = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
+//        calendar.getTime();
 
-        WeekType currentWeekType = calculateWeekType();
+        WeekType currentWeekType = calculateWeekType(calendar);
         List<WeekType> weekTypes = new ArrayList<>();
         weekTypes.add(currentWeekType);
         if (!WeekType.EVEN_WEEK.equals(currentWeekType)) {
@@ -248,9 +489,7 @@ public class FreeOptionServiceImpl implements FreeOptionService {
         return freeOptions;
     }
 
-    public WeekType calculateWeekType() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.getTime();
+    public WeekType calculateWeekType(Calendar calendar) {
         Schedule schedule;
         if (calendar.get(Calendar.MONTH) < 2) {
             schedule = scheduleRepository.findByFaculty_IdAndSemester(1L, Semester.ONE);

@@ -38,6 +38,11 @@ public class UnibookExceptionHandler {
 
             return ResponseEntity.status(400).body(exceptionInfo);
         }
+        if (exception.getExceptionType().equals(ExceptionType.GROUP_NOT_FREE)) {
+            ExceptionInfo exceptionInfo = new ExceptionInfo(exception.getExceptionType(), exception.getMessage());
+
+            return ResponseEntity.status(400).body(exceptionInfo);
+        }
         return null;
     }
 
