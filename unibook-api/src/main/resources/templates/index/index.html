@@ -1,33 +1,294 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>unibook</title>
-    <!-- Bootstrap Styles-->
-    <link th:href="@{/css/bootstrap.css}" rel="stylesheet"/>
-    <!-- FontAwesome Styles-->
-    <link th:href="@{/css/font-awesome.css}" rel="stylesheet"/>
-    <!-- Morris Chart Styles-->
-    <link th:href="@{/css/morris-0.4.3.min.css}" rel="stylesheet"/>
-    <!-- Custom Styles-->
+
+    <title>UniBook</title>
+    <!-- Font Awesome -->
     <link th:href="@{/css/custom-styles.css}" rel="stylesheet"/>
-    <!-- Google Fonts-->
-    <link th:href="@{'http://fonts.googleapis.com/css?family=Open+Sans'}" rel='stylesheet' type='text/css'/>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <!-- Material Design Bootstrap -->
+    <link th:href="@{/css/mdb.min.css}" rel="stylesheet"/>
+    <!-- Your custom styles (optional) -->
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
 </head>
+
 <body>
-<div id="wrapper">
-    <nav class="navbar navbar-default top-navbar" role="navigation">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="index.html"><i class="fa fa-comments"></i> <strong>MASTER </strong></a>
-        </div>
-    </nav>
+<nav class="navbar navbar-expand-lg navbar-dark primary-color">
+    <a class="navbar-brand brand" href="#">Universitatea Transilvania Brasov</a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+            aria-controls="basicExampleNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="basicExampleNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item login">
+                <a class="nav-link" href="#">
+                    <i class="fa fa-user prefix white-text"></i>
+                    Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container body col-lg-8 col-offset-2">
+    <h2 class="title"><b>Schedule</b></h2>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Select Option</th>
+            <th>Selected Option</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Study Year</td>
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button"
+                            id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">Select Option
+                    </button>
+                    <div class="dropdown-menu dropdown-ins">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Semester</td>
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button"
+                            id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">Select Option
+                    </button>
+                    <div class="dropdown-menu dropdown-ins">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Department:</td>
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button"
+                            id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">Select Option
+                    </button>
+                    <div class="dropdown-menu dropdown-ins">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Completed by:</td>
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button"
+                            id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">Select Option
+                    </button>
+                    <div class="dropdown-menu dropdown-ins">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Phone Number:</td>
+            <td>
+                <div class="md-form">
+                    <input type="text" id="form1" class="form-control input-field"
+                           placeholder="Please insert the phone number"/>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Schedule Code:</td>
+            <td>
+                <div class="md-form">
+                    <input type="text" id="form1" class="form-control input-field"
+                           placeholder="Please insert the schedule code"/>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+        <table>
+            <h2><b>Below you insert data in the Schedule</b></h2>
+            <table class="table table-hover ">
+                <thead>
+                <tr>
+                    <th>Select Option</th>
+                    <th>Selected Option</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Type of Classroom</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button"
+                                    id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">Select Option
+                            </button>
+                            <div class="dropdown-menu dropdown-ins">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Subject</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button"
+                                    id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">Select Option
+                            </button>
+                            <div class="dropdown-menu dropdown-ins">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Week</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button"
+                                    id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">Select Option
+                            </button>
+                            <div class="dropdown-menu dropdown-ins">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Day</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button"
+                                    id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">Select Option
+                            </button>
+                            <div class="dropdown-menu dropdown-ins">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Hour</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button"
+                                    id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">Select Option
+                            </button>
+                            <div class="dropdown-menu dropdown-ins">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Group</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button"
+                                    id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">Select Option
+                            </button>
+                            <div class="dropdown-menu dropdown-ins">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Teacher</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button"
+                                    id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">Select Option
+                            </button>
+                            <div class="dropdown-menu dropdown-ins">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-primary btn-block">Apply</button>
+        </table>
+    </table>
 </div>
+
+<!--Footer-->
+<footer class="page-footer font-small blue pt-0">
+
+    <div class="footer-copyright py-3 text-center">
+        © 2018 Copyright:
+        <a href="https://mdbootstrap.com/material-design-for-bootstrap/"> Made by Victoria Fargutu </a>
+    </div>
+    <!--/Copyright-->
+
+</footer>
+<!--/Footer-->
+
+<!-- SCRIPTS -->
+<!-- JQuery -->
+<script type="text/javascript" th:src="@{'https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<!-- Bootstrap core JavaScript -->
+<!-- MDB core JavaScript -->
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 </body>
 </html>

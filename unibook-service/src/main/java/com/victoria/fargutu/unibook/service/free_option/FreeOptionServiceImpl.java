@@ -52,6 +52,64 @@ public class FreeOptionServiceImpl implements FreeOptionService {
         return getFreeOptions(freeOptionCells);
     }
 
+//    @Override
+//    public List<FreeOption> getAllFreeOptionsByFilter(Filter filter) {
+//        List<FreeOptionCell> freeOptionCells = new ArrayList<>();
+//        List<FreeOption> freeOptions = new ArrayList<>();
+//
+//        Classroom classroom = filter.getClassroom();
+//        Day day = filter.getDay();
+//        String hour = filter.getHour();
+//        WeekType weekType = filter.getWeekType();
+//
+//        if (classroom != null) {
+//            classroom = classroomRepository.findOne(classroom.getId());
+//            if (classroom == null) {
+//                throw new NotFoundException("Classroom Not Found!");
+//            }
+//            freeOptionCells = freeOptionCellRepository.findAllByClassroom(classroom);
+//        }
+//        if (day != null) {
+//            freeOptionCells.addAll(freeOptionCellRepository.findAllByDay(day));
+//
+//            for (FreeOptionCell freeOptionCell : freeOptionCells) {
+//                if (!freeOptionCell.getDay().equals(day)) {
+//                    freeOptionCells.remove(freeOptionCell);
+//                }
+//            }
+//        }
+//        if (hour != null) {
+//            freeOptionCells.addAll(freeOptionCellRepository.findAllByHour(hour));
+//
+//            for (FreeOptionCell freeOptionCell : freeOptionCells) {
+//                if (!freeOptionCell.getHour().equals(hour)) {
+//                    freeOptionCells.remove(freeOptionCell);
+//                }
+//            }
+//        }
+//        if (weekType != null) {
+//            freeOptionCells.addAll(freeOptionCellRepository.findAllByWeekType(weekType));
+//
+//            for (FreeOptionCell freeOptionCell : freeOptionCells) {
+//                if (!freeOptionCell.getWeekType().equals(weekType)) {
+//                    freeOptionCells.remove(freeOptionCell);
+//                }
+//            }
+//        }
+//        if (freeOptionCells.size() == 0) {
+//            freeOptionCells = freeOptionCellRepository.findAll();
+//            freeOptions = getFreeOptions(freeOptionCells);
+//        }
+//
+//        if (classroom == null) {
+//            for (FreeOptionCell freeOptionCell : freeOptionCells) {
+//
+//            }
+//        }
+//
+//        return freeOptions;
+//    }
+
     @Override
     public List<FreeOption> getAllFreeOptionsByFilter(Filter filter) {
         List<FreeOptionCell> freeOptionCells = new ArrayList<>();
@@ -69,44 +127,57 @@ public class FreeOptionServiceImpl implements FreeOptionService {
             }
             freeOptionCells = freeOptionCellRepository.findAllByClassroom(classroom);
         }
-        if (day != null) {
+
+        if (day != null && !freeOptionCells.isEmpty()) {
+            List<FreeOptionCell> freeOptionCellsDays = new ArrayList<>();
+            for (FreeOptionCell freeOptionCell : freeOptionCells) {
+                if (freeOptionCell.getDay().equals(day)) {
+                    freeOptionCellsDays.add(freeOptionCell);
+//                    freeOptionCells.remove(freeOptionCell);
+                }
+            }
+            freeOptionCells = freeOptionCellsDays;
+        } else if (freeOptionCells.isEmpty()) {
             freeOptionCells.addAll(freeOptionCellRepository.findAllByDay(day));
+        }
 
+        if (hour != null && !freeOptionCells.isEmpty()) {
+            List<FreeOptionCell> freeOptionCellsHour = new ArrayList<>();
             for (FreeOptionCell freeOptionCell : freeOptionCells) {
-                if (!freeOptionCell.getDay().equals(day)) {
-                    freeOptionCells.remove(freeOptionCell);
+                if (freeOptionCell.getHour().equals(hour)) {
+                    freeOptionCellsHour.add(freeOptionCell);
+//                    freeOptionCells.remove(freeOptionCell);
                 }
             }
-        }
-        if (hour != null) {
+            freeOptionCells = freeOptionCellsHour;
+        } else if (freeOptionCells.isEmpty()) {
             freeOptionCells.addAll(freeOptionCellRepository.findAllByHour(hour));
+        }
 
+        if (weekType != null && !freeOptionCells.isEmpty()) {
+            List<FreeOptionCell> freeOptionCellsWeek = new ArrayList<>();
             for (FreeOptionCell freeOptionCell : freeOptionCells) {
-                if (!freeOptionCell.getHour().equals(hour)) {
-                    freeOptionCells.remove(freeOptionCell);
+                if (freeOptionCell.getWeekType().equals(weekType)) {
+                    freeOptionCellsWeek.add(freeOptionCell);
                 }
             }
-        }
-        if (weekType != null) {
+            freeOptionCells = freeOptionCellsWeek;
+        } else if (freeOptionCells.isEmpty()) {
             freeOptionCells.addAll(freeOptionCellRepository.findAllByWeekType(weekType));
-
-            for (FreeOptionCell freeOptionCell : freeOptionCells) {
-                if (!freeOptionCell.getWeekType().equals(weekType)) {
-                    freeOptionCells.remove(freeOptionCell);
-                }
-            }
         }
+
         if (freeOptionCells.size() == 0) {
             freeOptionCells = freeOptionCellRepository.findAll();
-            freeOptions = getFreeOptions(freeOptionCells);
         }
+        freeOptions = getFreeOptions(freeOptionCells);
+
+        //TODO  Look in schedule cells
 
         if (classroom == null) {
             for (FreeOptionCell freeOptionCell : freeOptionCells) {
 
             }
         }
-
         return freeOptions;
     }
 
@@ -218,6 +289,67 @@ public class FreeOptionServiceImpl implements FreeOptionService {
 
         return currentDay;
 
+    }
+
+    private void getFreeOptionsByFilterTest(Filter filter) {
+//        List<FreeOptionCell> freeOptionCells = new ArrayList<>();
+//        List<FreeOption> freeOptions = new ArrayList<>();
+//
+//        Classroom classroom = filter.getClassroom();
+//        Day day = filter.getDay();
+//        String hour = filter.getHour();
+//        WeekType weekType = filter.getWeekType();
+//
+//        if (classroom != null) {
+//            classroom = classroomRepository.findOne(classroom.getId());
+//            if (classroom == null) {
+//                throw new NotFoundException("Classroom Not Found!");
+//            }
+//            freeOptionCells = freeOptionCellRepository.findAllByClassroom(classroom);
+//        }
+//
+//        if (day != null && !freeOptionCells.isEmpty()) {
+//            for (FreeOptionCell freeOptionCell : freeOptionCells) {
+//                if (!freeOptionCell.getDay().equals(day)) {
+//                    freeOptionCells.remove(freeOptionCell);
+//                }
+//            }
+//        } else if (freeOptionCells.isEmpty()) {
+//            freeOptionCells.addAll(freeOptionCellRepository.findAllByDay(day));
+//        }
+//
+//        if (hour != null && !freeOptionCells.isEmpty()) {
+//            for (FreeOptionCell freeOptionCell : freeOptionCells) {
+//                if (!freeOptionCell.getHour().equals(hour)) {
+//                    freeOptionCells.remove(freeOptionCell);
+//                }
+//            }
+//        } else if (freeOptionCells.isEmpty()) {
+//            freeOptionCells.addAll(freeOptionCellRepository.findAllByHour(hour));
+//        }
+//
+//        if (weekType != null && !freeOptionCells.isEmpty()) {
+//            for (FreeOptionCell freeOptionCell : freeOptionCells) {
+//                if (!freeOptionCell.getWeekType().equals(weekType)) {
+//                    freeOptionCells.remove(freeOptionCell);
+//                }
+//            }
+//        } else if (freeOptionCells.isEmpty()) {
+//            freeOptionCells.addAll(freeOptionCellRepository.findAllByWeekType(weekType));
+//        }
+//
+//        if (freeOptionCells.size() == 0) {
+//            freeOptionCells = freeOptionCellRepository.findAll();
+//        }
+//        freeOptions = getFreeOptions(freeOptionCells);
+//
+//        //TODO  Look in schedule cells
+//
+//        if (classroom == null) {
+//            for (FreeOptionCell freeOptionCell : freeOptionCells) {
+//
+//            }
+//        }
     }
 
 }
