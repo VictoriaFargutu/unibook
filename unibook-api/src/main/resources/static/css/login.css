@@ -1,7 +1,7 @@
 body, html {
     height: 100%;
     background-repeat: no-repeat;
-    background-image: linear-gradient(rgb(0, 151, 136), rgb(0, 83, 75));
+    background-image: linear-gradient(rgb(21, 101, 192), rgb(0, 49, 102));
 }
 
 .card-container.card {
@@ -79,15 +79,15 @@ body, html {
 }
 
 .form-signin .form-control:focus {
-    border-color: rgb(0, 151, 136);
+    border-color: rgb(0, 60, 126);
     outline: 0;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgb(96, 162, 140);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgb(96, 162, 140);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgb(0, 123, 210);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgb(0, 123, 210);
 }
 
 .btn.btn-signin {
     /*background-color: #4d90fe; */
-    background-color: rgb(0, 151, 136);
+    background-color: rgb(0, 60, 126);
     /* background-color: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
     margin-top: 20px;
     padding: 0px;
@@ -107,15 +107,15 @@ body, html {
 .btn.btn-signin:hover,
 .btn.btn-signin:active,
 .btn.btn-signin:focus {
-    background-color: rgb(0, 83, 75);
+    background-color: rgb(0, 49, 102);
 }
 
 .forgot-password {
-    color: rgb(96, 162, 140);
+    color: rgb(0, 123, 210);
 }
 
 .forgot-password:hover,
 .forgot-password:active,
 .forgot-password:focus {
-    color: rgb(0, 83, 75);
+    color: rgb(0, 49, 102);
 }
