@@ -1,15 +1,13 @@
 package com.victoria.fargutu.unibook.service.free_option;
 
 import com.victoria.fargutu.unibook.repository.commons.*;
-import com.victoria.fargutu.unibook.repository.db.ClassroomRepository;
-import com.victoria.fargutu.unibook.repository.db.FreeOptionCellRepository;
-import com.victoria.fargutu.unibook.repository.db.ScheduleCellRepository;
-import com.victoria.fargutu.unibook.repository.db.ScheduleRepository;
+import com.victoria.fargutu.unibook.repository.db.*;
 import com.victoria.fargutu.unibook.repository.model.Filter;
 import com.victoria.fargutu.unibook.repository.model.classroom.Classroom;
 import com.victoria.fargutu.unibook.repository.model.classroom.ClassroomResponse;
 import com.victoria.fargutu.unibook.repository.model.free_option.FreeOption;
 import com.victoria.fargutu.unibook.repository.model.free_option_cell.FreeOptionCell;
+import com.victoria.fargutu.unibook.repository.model.reservation.Reservation;
 import com.victoria.fargutu.unibook.repository.model.schedule.Schedule;
 import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCell;
 import com.victoria.fargutu.unibook.repository.model.studentsGroup.StudentsGroup;
@@ -27,12 +25,52 @@ public class FreeOptionServiceImpl implements FreeOptionService {
     private ClassroomRepository classroomRepository;
     private FreeOptionCellRepository freeOptionCellRepository;
     private ScheduleRepository scheduleRepository;
+    private ReservationRepository reservationRepository;
 
-    public FreeOptionServiceImpl(ScheduleCellRepository scheduleCellRepository, ClassroomRepository classroomRepository, FreeOptionCellRepository freeOptionCellRepository, ScheduleRepository scheduleRepository) {
+    public FreeOptionServiceImpl(ScheduleCellRepository scheduleCellRepository, ClassroomRepository classroomRepository, FreeOptionCellRepository freeOptionCellRepository, ScheduleRepository scheduleRepository, ReservationRepository reservationRepository) {
         this.scheduleCellRepository = scheduleCellRepository;
         this.classroomRepository = classroomRepository;
         this.freeOptionCellRepository = freeOptionCellRepository;
         this.scheduleRepository = scheduleRepository;
+        this.reservationRepository = reservationRepository;
+    }
+
+    private List<FreeOption> verifyWithReservations(List<FreeOption> freeOptions) {
+        if (!freeOptions.isEmpty()) {
+            List<FreeOption> tempFreeOptions = new ArrayList<>();
+            tempFreeOptions.addAll(freeOptions);
+
+            List<Reservation> reservations = reservationRepository.findAll();
+            for (FreeOption freeOption : tempFreeOptions) {
+                if (freeOption.getDate() != null) {
+                    Calendar calendarFreeOption = Calendar.getInstance();
+                    calendarFreeOption.setTime(freeOption.getDate());
+
+                    for (Reservation tempReservation : reservations) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(tempReservation.getDate());
+
+                        calendar.set(Calendar.HOUR_OF_DAY, calendarFreeOption.get(Calendar.HOUR_OF_DAY));
+                        calendar.set(Calendar.MINUTE, calendarFreeOption.get(Calendar.MINUTE));
+                        calendar.set(Calendar.SECOND, calendarFreeOption.get(Calendar.SECOND));
+                        calendar.set(Calendar.MILLISECOND, calendarFreeOption.get(Calendar.MILLISECOND));
+                        if (tempReservation.getDay().equals(freeOption.getDay())) {
+                            if (calendar.getTime().equals(calendarFreeOption.getTime())) {
+                                if (tempReservation.getHour().equals(freeOption.getHour())) {
+                                    if (tempReservation.getWeekType().equals(freeOption.getWeekType())) {
+                                        if (tempReservation.getClassroom().getId().equals(freeOption.getClassroom().getId())) {
+                                            freeOptions.remove(freeOption);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return freeOptions;
     }
 
     @Override
@@ -44,6 +82,7 @@ public class FreeOptionServiceImpl implements FreeOptionService {
         return null;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public List<FreeOption> getAllFreeOptionsByClassroom(Long classroomId) {
         Classroom classroom = classroomRepository.findOne(classroomId);
@@ -52,9 +91,13 @@ public class FreeOptionServiceImpl implements FreeOptionService {
         }
 
         List<FreeOptionCell> freeOptionCells = freeOptionCellRepository.findAllByClassroom(classroom);
+        List<FreeOption> freeOptions = new ArrayList<>();
+
 
         if (!freeOptionCells.isEmpty()) {
-            return getFreeOptions(freeOptionCells);
+            freeOptions = getFreeOptions(freeOptionCells);
+
+            return verifyWithReservations(freeOptions);
         }
         return null;
     }
@@ -270,7 +313,7 @@ public class FreeOptionServiceImpl implements FreeOptionService {
             freeOptions = freeOptionByGroup;
         }
 
-        return freeOptions;
+        return verifyWithReservations(freeOptions);
     }
 
     @SuppressWarnings("Duplicates")
@@ -473,7 +516,6 @@ public class FreeOptionServiceImpl implements FreeOptionService {
     public List<FreeOption> getFreeOptions(List<FreeOptionCell> freeOptionCells) {
         List<FreeOption> freeOptions = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
-//        calendar.getTime();
         WeekType currentWeekType = calculateWeekType(calendar);
         List<WeekType> weekTypes = new ArrayList<>();
         weekTypes.add(currentWeekType);
@@ -576,67 +618,6 @@ public class FreeOptionServiceImpl implements FreeOptionService {
 
         return currentDay;
 
-    }
-
-    private void getFreeOptionsByFilterTest(Filter filter) {
-//        List<FreeOptionCell> freeOptionCells = new ArrayList<>();
-//        List<FreeOption> freeOptions = new ArrayList<>();
-//
-//        Classroom classroom = filter.getClassroom();
-//        Day day = filter.getDay();
-//        String hour = filter.getHour();
-//        WeekType weekType = filter.getWeekType();
-//
-//        if (classroom != null) {
-//            classroom = classroomRepository.findOne(classroom.getId());
-//            if (classroom == null) {
-//                throw new NotFoundException("Classroom Not Found!");
-//            }
-//            freeOptionCells = freeOptionCellRepository.findAllByClassroom(classroom);
-//        }
-//
-//        if (day != null && !freeOptionCells.isEmpty()) {
-//            for (FreeOptionCell freeOptionCell : freeOptionCells) {
-//                if (!freeOptionCell.getDay().equals(day)) {
-//                    freeOptionCells.remove(freeOptionCell);
-//                }
-//            }
-//        } else if (freeOptionCells.isEmpty()) {
-//            freeOptionCells.addAll(freeOptionCellRepository.findAllByDay(day));
-//        }
-//
-//        if (hour != null && !freeOptionCells.isEmpty()) {
-//            for (FreeOptionCell freeOptionCell : freeOptionCells) {
-//                if (!freeOptionCell.getHour().equals(hour)) {
-//                    freeOptionCells.remove(freeOptionCell);
-//                }
-//            }
-//        } else if (freeOptionCells.isEmpty()) {
-//            freeOptionCells.addAll(freeOptionCellRepository.findAllByHour(hour));
-//        }
-//
-//        if (weekType != null && !freeOptionCells.isEmpty()) {
-//            for (FreeOptionCell freeOptionCell : freeOptionCells) {
-//                if (!freeOptionCell.getWeekType().equals(weekType)) {
-//                    freeOptionCells.remove(freeOptionCell);
-//                }
-//            }
-//        } else if (freeOptionCells.isEmpty()) {
-//            freeOptionCells.addAll(freeOptionCellRepository.findAllByWeekType(weekType));
-//        }
-//
-//        if (freeOptionCells.size() == 0) {
-//            freeOptionCells = freeOptionCellRepository.findAll();
-//        }
-//        freeOptions = getFreeOptions(freeOptionCells);
-//
-//        //TODO  Look in schedule cells
-//
-//        if (classroom == null) {
-//            for (FreeOptionCell freeOptionCell : freeOptionCells) {
-//
-//            }
-//        }
     }
 
 }

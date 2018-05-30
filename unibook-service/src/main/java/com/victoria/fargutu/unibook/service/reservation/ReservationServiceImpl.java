@@ -38,7 +38,7 @@ public class ReservationServiceImpl implements ReservationService {
             if (scheduleCell.getDay().equals(reservation.getDay())) {
                 if (scheduleCell.getHour().equals(reservation.getHour())) {
                     if (scheduleCell.getWeekType().equals(reservation.getWeekType())) {
-                        if (scheduleCell.getClassroom().equals(reservation.getClassroom())) {
+                        if (scheduleCell.getClassroom().getId().equals(reservation.getClassroom().getId())) {
                             throw new ClassroomNotFreeException();
                         }
                     }
@@ -60,7 +60,7 @@ public class ReservationServiceImpl implements ReservationService {
                 if (calendar.getTime().equals(calendarMyReservation.getTime())) {
                     if (tempReservation.getHour().equals(reservation.getHour())) {
                         if (tempReservation.getWeekType().equals(reservation.getWeekType())) {
-                            if (tempReservation.getClassroom().equals(reservation.getClassroom())) {
+                            if (tempReservation.getClassroom().getId().equals(reservation.getClassroom().getId())) {
                                 throw new ClassroomNotFreeException();
                             }
                         }
