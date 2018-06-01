@@ -8,6 +8,7 @@ import com.victoria.fargutu.unibook.repository.model.course.Course;
 import com.victoria.fargutu.unibook.repository.model.faculty.Faculty;
 import com.victoria.fargutu.unibook.repository.model.studentsGroup.StudentsGroup;
 import com.victoria.fargutu.unibook.repository.model.user.User;
+import com.victoria.fargutu.unibook.service.auth.AuthService;
 import com.victoria.fargutu.unibook.service.classroom.ClassroomService;
 import com.victoria.fargutu.unibook.service.course.CourseService;
 import com.victoria.fargutu.unibook.service.faculty.FacultyService;
@@ -30,6 +31,7 @@ import java.util.List;
 @Controller
 @RequestMapping(path = "/")
 public class IndexController {
+    private AuthService authService;
     private AuthManager authManager;
     private UserService userService;
     private ClassroomService classroomService;
@@ -40,7 +42,8 @@ public class IndexController {
     private FreeOptionCellService freeOptionCellService;
 
     @Autowired
-    IndexController(AuthManager authManager, UserService userService, ClassroomService classroomService, CourseService courseService, StudentsGroupService studentsGroupService, ScheduleCellService scheduleCellService, FacultyService facultyService, FreeOptionCellService freeOptionCellService) {
+    IndexController(AuthService authService, AuthManager authManager, UserService userService, ClassroomService classroomService, CourseService courseService, StudentsGroupService studentsGroupService, ScheduleCellService scheduleCellService, FacultyService facultyService, FreeOptionCellService freeOptionCellService) {
+        this.authService = authService;
         this.authManager = authManager;
         this.userService = userService;
         this.classroomService = classroomService;
@@ -93,6 +96,13 @@ public class IndexController {
     public String createScheduleCell(@ModelAttribute ScheduleMap scheduleMap) {
         scheduleCellService.createScheduleCell(scheduleMap);
         freeOptionCellService.addFreeOptioncells();
+        return "redirect:/";
+    }
+
+    @HasRole(UserRole.USER)
+    @RequestMapping(path = "/logout", method = RequestMethod.POST)
+    public String logout() {
+        authService.logout();
         return "redirect:/";
     }
 
