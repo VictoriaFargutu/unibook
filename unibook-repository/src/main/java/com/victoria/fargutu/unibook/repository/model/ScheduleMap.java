@@ -1,55 +1,55 @@
-package com.victoria.fargutu.unibook.repository.model.schedulleCell;
+package com.victoria.fargutu.unibook.repository.model;
 
 import com.victoria.fargutu.unibook.repository.commons.Day;
+import com.victoria.fargutu.unibook.repository.commons.Semester;
 import com.victoria.fargutu.unibook.repository.commons.Subgroup;
 import com.victoria.fargutu.unibook.repository.commons.WeekType;
 import com.victoria.fargutu.unibook.repository.model.classroom.Classroom;
 import com.victoria.fargutu.unibook.repository.model.course.Course;
-import com.victoria.fargutu.unibook.repository.model.schedule.Schedule;
+import com.victoria.fargutu.unibook.repository.model.faculty.Faculty;
 import com.victoria.fargutu.unibook.repository.model.studentsGroup.StudentsGroup;
 import com.victoria.fargutu.unibook.repository.model.user.User;
+import org.springframework.stereotype.Component;
 
-import javax.persistence.*;
+import java.util.Date;
 
-@Entity
-public class ScheduleCell {
-    @Id
-    @GeneratedValue
-    private Long id;
+@Component
+public class ScheduleMap {
+    private Semester semester;
+    private Date semesterStartDate;
+    private Faculty faculty;
 
-    @ManyToOne
-    @JoinColumn(name = "students_group_id")
     private StudentsGroup studentsGroup;
-
-    @Enumerated(EnumType.STRING)
     private Subgroup subgroup;
-
-    @Enumerated(EnumType.STRING)
     private WeekType weekType;
-
     private String hour;
-
-    @Enumerated(EnumType.STRING)
+    private User user;
+    private Course course;
+    private Classroom classroom;
     private Day day;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    public Semester getSemester() {
+        return semester;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "course_id")
-    private Course course;
+    public void setSemester(Semester semester) {
+        this.semester = semester;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "classroom_id")
-    private Classroom classroom;
+    public Date getSemesterStartDate() {
+        return semesterStartDate;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "schedule_id")
-    private Schedule schedule;
+    public void setSemesterStartDate(Date semesterStartDate) {
+        this.semesterStartDate = semesterStartDate;
+    }
 
-    public Long getId() {
-        return id;
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
     }
 
     public StudentsGroup getStudentsGroup() {
@@ -84,14 +84,6 @@ public class ScheduleCell {
         this.hour = hour;
     }
 
-    public Day getDay() {
-        return day;
-    }
-
-    public void setDay(Day day) {
-        this.day = day;
-    }
-
     public User getUser() {
         return user;
     }
@@ -116,11 +108,11 @@ public class ScheduleCell {
         this.classroom = classroom;
     }
 
-    public Schedule getSchedule() {
-        return schedule;
+    public Day getDay() {
+        return day;
     }
 
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
+    public void setDay(Day day) {
+        this.day = day;
     }
 }

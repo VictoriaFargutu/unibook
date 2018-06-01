@@ -1,21 +1,24 @@
 /* Your custom styles */
-
+.form-control {
+    border: 5px solid #007bd2;
+}
 
 .body {
-  padding-bottom: 50px
+    padding-bottom: 50px
 }
 
 .title {
-  padding-top: 50px
+    padding-top: 50px
 }
 
 .input-field {
-  width: 100%
+    width: 100%
 }
+
 .login {
-  padding-right: 30px
+    padding-right: 30px
 }
 
 .brand {
-  padding-left: 20px
+    padding-left: 20px
 }

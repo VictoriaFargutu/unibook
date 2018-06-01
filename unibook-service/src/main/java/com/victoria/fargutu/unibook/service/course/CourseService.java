@@ -9,4 +9,6 @@ public interface CourseService {
     Course getCourseById(Long id);
 
     List<CourseResponse> getAll();
+
+    List<Course> getCourses();
 }

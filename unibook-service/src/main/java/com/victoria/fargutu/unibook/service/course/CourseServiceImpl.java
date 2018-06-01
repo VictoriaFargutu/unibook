@@ -32,4 +32,9 @@ public class CourseServiceImpl implements CourseService {
         }
         return courseResponses;
     }
+
+    @Override
+    public List<Course> getCourses() {
+        return courseRepository.findAll();
+    }
 }

@@ -29,4 +29,9 @@ public class UnibookException extends RuntimeException {
     public Field getField() {
         return field;
     }
+
+    public boolean isOfType(ExceptionType exceptionType) {
+        return this.exceptionType.equals(exceptionType);
+    }
+
 }

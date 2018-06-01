@@ -12,6 +12,8 @@ import com.victoria.fargutu.unibook.service.validation.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -96,5 +98,10 @@ public class UserServiceImpl implements UserService {
         existingUser.setRole(user.getRole());
 
         return userRepository.save(existingUser);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 }

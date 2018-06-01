@@ -8,7 +8,7 @@ import com.victoria.fargutu.unibook.repository.db.FreeOptionCellRepository;
 import com.victoria.fargutu.unibook.repository.db.ScheduleCellRepository;
 import com.victoria.fargutu.unibook.repository.model.classroom.Classroom;
 import com.victoria.fargutu.unibook.repository.model.free_option_cell.FreeOptionCell;
-import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCell;
+import com.victoria.fargutu.unibook.repository.model.scheduleCell.ScheduleCell;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,6 +28,7 @@ public class FreeOptionCellServiceImpl implements FreeOptionCellService {
 
     @Override
     public void addFreeOptioncells() {
+        freeOptionCellRepository.deleteAll();
         WeekType[] weekTypes = WeekType.values();
         Day[] days = Day.values();
         List<String> hours = new ArrayList<>();

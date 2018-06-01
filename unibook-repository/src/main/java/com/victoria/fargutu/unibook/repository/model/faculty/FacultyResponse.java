@@ -1,4 +1,4 @@
-package com.victoria.fargutu.unibook.repository.model.Faculty;
+package com.victoria.fargutu.unibook.repository.model.faculty;
 
 public class FacultyResponse {
     private Long id;

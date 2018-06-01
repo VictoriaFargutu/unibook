@@ -2,8 +2,8 @@ package com.victoria.fargutu.unibook.api.apis;
 
 import com.victoria.fargutu.unibook.repository.commons.Day;
 import com.victoria.fargutu.unibook.repository.commons.UserRole;
-import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCell;
-import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCellResponse;
+import com.victoria.fargutu.unibook.repository.model.scheduleCell.ScheduleCell;
+import com.victoria.fargutu.unibook.repository.model.scheduleCell.ScheduleCellResponse;
 import com.victoria.fargutu.unibook.service.scheduleCell.ScheduleCellService;
 import com.victoria.fargutu.unibook.service.security.HasRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +21,11 @@ public class ScheduleCellApi {
         this.scheduleCellService = scheduleCellService;
     }
 
-    @HasRole(UserRole.ADMIN)
-    @RequestMapping(method = RequestMethod.POST)
-    public ScheduleCell createScheduleCell(@RequestBody ScheduleCell scheduleCell) {
-        return scheduleCellService.createScheduleCell(scheduleCell);
-    }
+//    @HasRole(UserRole.ADMIN)
+//    @RequestMapping(method = RequestMethod.POST)
+//    public ScheduleCell createScheduleCell(@RequestBody ScheduleCell scheduleCell) {
+//        return scheduleCellService.createScheduleCell(scheduleCell);
+//    }
 
     @HasRole(UserRole.USER)
     @RequestMapping(value = "/hour", method = RequestMethod.GET)

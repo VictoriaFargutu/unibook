@@ -2,7 +2,7 @@ package com.victoria.fargutu.unibook.repository.model.classroom;
 
 import com.victoria.fargutu.unibook.repository.commons.ClassroomType;
 import com.victoria.fargutu.unibook.repository.model.reservation.Reservation;
-import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCell;
+import com.victoria.fargutu.unibook.repository.model.scheduleCell.ScheduleCell;
 
 import javax.persistence.*;
 import java.util.Set;

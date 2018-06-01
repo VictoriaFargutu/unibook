@@ -28,4 +28,9 @@ public class ClassroomServiceImpl implements ClassroomService {
         }
         return classroomResponses;
     }
+
+    @Override
+    public List<Classroom> getAllClassrooms() {
+        return classroomRepository.findAll();
+    }
 }

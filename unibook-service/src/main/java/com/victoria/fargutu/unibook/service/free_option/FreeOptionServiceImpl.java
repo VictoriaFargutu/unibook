@@ -9,7 +9,7 @@ import com.victoria.fargutu.unibook.repository.model.free_option.FreeOption;
 import com.victoria.fargutu.unibook.repository.model.free_option_cell.FreeOptionCell;
 import com.victoria.fargutu.unibook.repository.model.reservation.Reservation;
 import com.victoria.fargutu.unibook.repository.model.schedule.Schedule;
-import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCell;
+import com.victoria.fargutu.unibook.repository.model.scheduleCell.ScheduleCell;
 import com.victoria.fargutu.unibook.repository.model.studentsGroup.StudentsGroup;
 import com.victoria.fargutu.unibook.repository.model.studentsGroup.StudentsGroupResponse;
 import com.victoria.fargutu.unibook.service.exceptions.NotFoundException;

@@ -5,7 +5,7 @@ import com.victoria.fargutu.unibook.repository.db.ScheduleCellRepository;
 import com.victoria.fargutu.unibook.repository.model.AuthManager;
 import com.victoria.fargutu.unibook.repository.model.reservation.Reservation;
 import com.victoria.fargutu.unibook.repository.model.reservation.ReservationResponse;
-import com.victoria.fargutu.unibook.repository.model.schedulleCell.ScheduleCell;
+import com.victoria.fargutu.unibook.repository.model.scheduleCell.ScheduleCell;
 import com.victoria.fargutu.unibook.service.exceptions.ClassroomNotFreeException;
 import com.victoria.fargutu.unibook.service.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

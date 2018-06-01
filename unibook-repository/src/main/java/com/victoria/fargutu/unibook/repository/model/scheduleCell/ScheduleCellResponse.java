@@ -1,4 +1,4 @@
-package com.victoria.fargutu.unibook.repository.model.schedulleCell;
+package com.victoria.fargutu.unibook.repository.model.scheduleCell;
 
 import com.victoria.fargutu.unibook.repository.commons.Day;
 import com.victoria.fargutu.unibook.repository.commons.Subgroup;

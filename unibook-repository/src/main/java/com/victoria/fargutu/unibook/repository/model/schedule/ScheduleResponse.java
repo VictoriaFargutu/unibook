@@ -1,7 +1,7 @@
 package com.victoria.fargutu.unibook.repository.model.schedule;
 
 import com.victoria.fargutu.unibook.repository.commons.Semester;
-import com.victoria.fargutu.unibook.repository.model.Faculty.FacultyResponse;
+import com.victoria.fargutu.unibook.repository.model.faculty.FacultyResponse;
 
 public class ScheduleResponse {
     private Long id;

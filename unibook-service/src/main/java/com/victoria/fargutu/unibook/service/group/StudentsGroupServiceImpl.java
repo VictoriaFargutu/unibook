@@ -28,4 +28,9 @@ public class StudentsGroupServiceImpl implements StudentsGroupService {
 
         return studentsGroupResponses;
     }
+
+    @Override
+    public List<StudentsGroup> getStudentsGroups() {
+        return studentsGroupRepository.findAll();
+    }
 }

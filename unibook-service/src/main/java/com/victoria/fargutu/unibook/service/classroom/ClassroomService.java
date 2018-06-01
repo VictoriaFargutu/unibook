@@ -7,5 +7,7 @@ import com.victoria.fargutu.unibook.repository.model.classroom.ClassroomResponse
 import java.util.List;
 
 public interface ClassroomService {
-    List<ClassroomResponse>  getAllClassroomsByType(ClassroomType classroomType);
+    List<ClassroomResponse> getAllClassroomsByType(ClassroomType classroomType);
+
+    List<Classroom> getAllClassrooms();
 }
