@@ -8,7 +8,7 @@ import com.victoria.fargutu.unibook.repository.model.scheduleCell.ScheduleCellRe
 import java.util.List;
 
 public interface ScheduleCellService {
-    ScheduleCell createScheduleCell(ScheduleMap scheduleMap);
+    ScheduleCell createScheduleCell(ScheduleCell scheduleCell);
 
     List<ScheduleCellResponse> findAllByFreeHour(String hour);
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/schedule")
+@RequestMapping(value = "/api/schedule")
 public class ScheduleApi {
     private ScheduleService scheduleService;
 

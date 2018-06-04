@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/schedule/cell")
+@RequestMapping(path = "api/schedule/cell")
 public class ScheduleCellApi {
     private ScheduleCellService scheduleCellService;
 
@@ -21,11 +21,11 @@ public class ScheduleCellApi {
         this.scheduleCellService = scheduleCellService;
     }
 
-//    @HasRole(UserRole.ADMIN)
-//    @RequestMapping(method = RequestMethod.POST)
-//    public ScheduleCell createScheduleCell(@RequestBody ScheduleCell scheduleCell) {
-//        return scheduleCellService.createScheduleCell(scheduleCell);
-//    }
+    @HasRole(UserRole.ADMIN)
+    @RequestMapping(method = RequestMethod.POST)
+    public ScheduleCell createScheduleCell(@RequestBody ScheduleCell scheduleCell) {
+        return scheduleCellService.createScheduleCell(scheduleCell);
+    }
 
     @HasRole(UserRole.USER)
     @RequestMapping(value = "/hour", method = RequestMethod.GET)
