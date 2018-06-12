@@ -76,8 +76,11 @@ public class FreeOptionServiceImpl implements FreeOptionService {
     @Override
     public List<FreeOption> getAllFreeOptions() {
         List<FreeOptionCell> freeOptionCells = freeOptionCellRepository.findAll();
+        List<FreeOption> freeOptions;
         if (!freeOptionCells.isEmpty()) {
-            return getFreeOptions(freeOptionCells);
+            freeOptions = getAllFreeOptionsWithDate(freeOptionCells);
+
+            return verifyWithReservations(freeOptions);
         }
         return null;
     }
@@ -91,11 +94,10 @@ public class FreeOptionServiceImpl implements FreeOptionService {
         }
 
         List<FreeOptionCell> freeOptionCells = freeOptionCellRepository.findAllByClassroom(classroom);
-        List<FreeOption> freeOptions = new ArrayList<>();
-
+        List<FreeOption> freeOptions;
 
         if (!freeOptionCells.isEmpty()) {
-            freeOptions = getFreeOptions(freeOptionCells);
+            freeOptions = getAllFreeOptionsWithDate(freeOptionCells);
 
             return verifyWithReservations(freeOptions);
         }
@@ -513,6 +515,7 @@ public class FreeOptionServiceImpl implements FreeOptionService {
         return freeOptions;
     }
 
+    @SuppressWarnings("Duplicates")
     public List<FreeOption> getFreeOptions(List<FreeOptionCell> freeOptionCells) {
         List<FreeOption> freeOptions = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
@@ -549,10 +552,10 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                         continue;
                     }
 
-                    if (currentDay.name().equals(freeOptionCell.getDay().name()) && (currentHour >= Integer.valueOf(freeOptionCell.getHour().substring(0, 2)))) {
+                    if (currentWeekType.equals(freeOptionCell.getWeekType()) && currentDay.name().equals(freeOptionCell.getDay().name()) && (currentHour >= Integer.valueOf(freeOptionCell.getHour().substring(0, 2)))) {
                         continue;
                     }
-                    if (currentDay.name().equals(freeOptionCell.getDay().name()) && currentHour > 22 && currentHour < 24 && freeOptionCell.getHour().substring(0, 2).equals("08")) {
+                    if (currentDay.name().equals(freeOptionCell.getDay().name()) && currentHour >= 20 && currentHour < 24 && freeOptionCell.getHour().substring(0, 2).equals("08")) {
                         calendar.add(Calendar.DATE, 1);
                     }
                     count++;
@@ -562,7 +565,6 @@ public class FreeOptionServiceImpl implements FreeOptionService {
 
                     if (count > 1 && !tempDay.equals(freeOptionCellDay)) {
                         calendar.add(Calendar.DATE, 1);
-                        freeOption.setDate(calendar.getTime());
                         tempDay = freeOptionCellDay;
                     }
                     freeOption.setDate(calendar.getTime());
@@ -578,6 +580,74 @@ public class FreeOptionServiceImpl implements FreeOptionService {
         }
         return freeOptions;
     }
+
+
+    @SuppressWarnings("Duplicates")
+    public List<FreeOption> getAllFreeOptionsWithDate(List<FreeOptionCell> freeOptionCells) {
+        List<FreeOption> freeOptions = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        WeekType currentWeekType = calculateWeekType(calendar);
+        List<WeekType> weekTypes = new ArrayList<>();
+        weekTypes.add(currentWeekType);
+        if (!WeekType.EVEN_WEEK.equals(currentWeekType)) {
+            weekTypes.add(WeekType.EVEN_WEEK);
+        } else {
+            weekTypes.add(WeekType.ODD_WEEK);
+        }
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        Day currentDay = initializeCurrentDay(calendar);
+        Map<Day, Integer> days = new HashMap<>();
+
+        days.put(Day.MONDAY, 1);
+        days.put(Day.TUESDAY, 2);
+        days.put(Day.WEDNESDAY, 3);
+        days.put(Day.THURSDAY, 4);
+        days.put(Day.FRIDAY, 5);
+        days.put(Day.SATURDAY, 6);
+        days.put(Day.SUNDAY, 7);
+
+        Day freeOptionCellDay;
+        Day tempDay = freeOptionCells.get(0).getDay();
+        int count = 0;
+        for (WeekType weekType : weekTypes) {
+            for (FreeOptionCell freeOptionCell : freeOptionCells) {
+
+                freeOptionCellDay = freeOptionCell.getDay();
+
+                if (freeOptionCell.getWeekType().equals(weekType)) {
+                    if (freeOptionCell.getWeekType().equals(weekTypes.get(0)) && days.get(currentDay) > days.get(freeOptionCellDay)) {
+                        continue;
+                    }
+
+                    if (currentWeekType.equals(freeOptionCell.getWeekType()) && currentDay.name().equals(freeOptionCell.getDay().name()) && (currentHour >= Integer.valueOf(freeOptionCell.getHour().substring(0, 2)))) {
+                        continue;
+                    }
+                    if (currentDay.name().equals(freeOptionCell.getDay().name()) && currentHour >= 20 && currentHour < 24 && freeOptionCell.getHour().substring(0, 2).equals("08")) {
+                        calendar.add(Calendar.DATE, 1);
+                    }
+                    count++;
+                    FreeOption freeOption = new FreeOption();
+                    freeOption.setClassroom(new ClassroomResponse(freeOptionCell.getClassroom()));
+                    freeOption.setWeekType(freeOptionCell.getWeekType());
+
+                    if (count > 1 && !tempDay.equals(freeOptionCellDay)) {
+                        calendar.add(Calendar.DATE, 1);
+                        tempDay = freeOptionCellDay;
+                    }
+                    freeOption.setDate(calendar.getTime());
+                    if (freeOptionCellDay.equals(currentDay)) {
+                        tempDay = freeOptionCellDay;
+                    }
+                    freeOption.setDay(freeOptionCell.getDay());
+                    freeOption.setHour(freeOptionCell.getHour());
+
+                    freeOptions.add(freeOption);
+                }
+            }
+        }
+        return freeOptions;
+    }
+
 
     public WeekType calculateWeekType(Calendar calendar) {
         Schedule schedule;

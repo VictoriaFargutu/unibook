@@ -37,7 +37,7 @@ public class IndexController {
         this.scheduleService = scheduleService;
     }
 
-    @HasRole(UserRole.USER)
+    @HasRole(UserRole.ADMIN)
     @GetMapping
     public String openIndexPage(ModelMap modelMap) {
         User user = authManager.getLoggedInUser();

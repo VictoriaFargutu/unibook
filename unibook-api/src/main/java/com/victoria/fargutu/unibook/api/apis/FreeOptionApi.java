@@ -24,8 +24,8 @@ public class FreeOptionApi {
     @HasRole(UserRole.USER)
     @GetMapping("/classrooms")
     public List<FreeOption> getAllFreeOptionsByClassroom(@RequestParam("classroomId") Long classroomId) {
-        // freeOptionCellService.addFreeOptioncells();
-        return freeOptionService.getAllFreeOptionsByClassroom(classroomId);
+//        freeOptionCellService.addFreeOptioncells();
+         return freeOptionService.getAllFreeOptionsByClassroom(classroomId);
     }
 
     @HasRole(UserRole.USER)

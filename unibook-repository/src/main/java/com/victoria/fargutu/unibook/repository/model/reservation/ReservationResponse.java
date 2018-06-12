@@ -1,6 +1,7 @@
 package com.victoria.fargutu.unibook.repository.model.reservation;
 
 import com.victoria.fargutu.unibook.repository.commons.Day;
+import com.victoria.fargutu.unibook.repository.commons.Specialization;
 import com.victoria.fargutu.unibook.repository.commons.WeekType;
 import com.victoria.fargutu.unibook.repository.model.classroom.ClassroomResponse;
 import com.victoria.fargutu.unibook.repository.model.course.CourseResponse;
@@ -12,6 +13,8 @@ public class ReservationResponse {
     private StudentsGroupResponse studentsGroup;
     private ClassroomResponse classroom;
     private CourseResponse course;
+    private String year;
+    private Specialization specialization;
     private WeekType weekType;
     private Day day;
     private Long date;
@@ -36,6 +39,17 @@ public class ReservationResponse {
         } else {
             this.course = null;
         }
+        if (reservation.getYear() != null) {
+            this.year = reservation.getYear();
+        } else {
+            this.year = null;
+        }
+        if (reservation.getSpecialization() != null) {
+            this.specialization = reservation.getSpecialization();
+        } else {
+            this.specialization = null;
+        }
+
         this.weekType = reservation.getWeekType();
         this.day = reservation.getDay();
         this.date = reservation.getDate().getTime();
@@ -72,6 +86,22 @@ public class ReservationResponse {
 
     public void setCourse(CourseResponse course) {
         this.course = course;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public Specialization getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(Specialization specialization) {
+        this.specialization = specialization;
     }
 
     public WeekType getWeekType() {

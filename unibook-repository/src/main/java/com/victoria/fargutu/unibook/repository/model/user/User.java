@@ -117,3 +117,4 @@ public class User {
         return roles.indexOf(this.role) >= roles.indexOf(userRole);
     }
 }
+

@@ -1,7 +1,7 @@
 package com.victoria.fargutu.unibook.repository.model.reservation;
 
 import com.victoria.fargutu.unibook.repository.commons.Day;
-import com.victoria.fargutu.unibook.repository.commons.Hour;
+import com.victoria.fargutu.unibook.repository.commons.Specialization;
 import com.victoria.fargutu.unibook.repository.commons.Subgroup;
 import com.victoria.fargutu.unibook.repository.commons.WeekType;
 import com.victoria.fargutu.unibook.repository.model.classroom.Classroom;
@@ -21,6 +21,11 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    private String year;
+
+    @Enumerated(EnumType.STRING)
+    private Specialization specialization;
 
     @ManyToOne
     @JoinColumn(name = "studentsGroup_id")
@@ -89,6 +94,22 @@ public class Reservation {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public Specialization getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(Specialization specialization) {
+        this.specialization = specialization;
     }
 
     public WeekType getWeekType() {
