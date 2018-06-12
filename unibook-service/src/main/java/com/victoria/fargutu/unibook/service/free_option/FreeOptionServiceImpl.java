@@ -211,13 +211,13 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                 freeOptions = getFreeOptionsAccordingToFilter(freeOptionCells, filter);
             }
         } else if (!freeOptionCells.isEmpty()) {
-            freeOptions = getFreeOptions(freeOptionCells);
+            freeOptions = getFreeOptions(freeOptionCells, filter);
         }
 
         if (freeOptionCells.size() == 0) {
             freeOptionCells = freeOptionCellRepository.findAll();
             if (!freeOptionCells.isEmpty()) {
-                freeOptions = getFreeOptions(freeOptionCells);
+                freeOptions = getFreeOptions(freeOptionCells, filter);
             }
         }
 
@@ -422,6 +422,9 @@ public class FreeOptionServiceImpl implements FreeOptionService {
         String selectedHour = filter.getHour();
         Calendar calendar = Calendar.getInstance();
         List<Day> days = new ArrayList<>();
+        String year = filter.getYear();
+        Specialization specialization = filter.getSpecialization();
+        Subgroup subgroup = filter.getSubgroup();
 
         days.add(Day.MONDAY);
         days.add(Day.TUESDAY);
@@ -442,6 +445,16 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                                 freeOption.setWeekType(freeOptionCell.getWeekType());
                                 freeOption.setHour(freeOptionCell.getHour());
                                 freeOption.setDay(freeOptionCell.getDay());
+
+                                if (year != null) {
+                                    freeOption.setYear(year);
+                                }
+                                if (specialization != null) {
+                                    freeOption.setSpecialization(specialization);
+                                }
+                                if (subgroup != null) {
+                                    freeOption.setSubgroup(subgroup);
+                                }
 
                                 freeOptions.add(freeOption);
                             }
@@ -489,6 +502,16 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                         freeOption.setHour(freeOptionCell.getHour());
                         freeOption.setDay(freeOptionCell.getDay());
 
+                        if (year != null) {
+                            freeOption.setYear(year);
+                        }
+                        if (specialization != null) {
+                            freeOption.setSpecialization(specialization);
+                        }
+                        if (subgroup != null) {
+                            freeOption.setSubgroup(subgroup);
+                        }
+
                         freeOptions.add(freeOption);
                     }
                 }
@@ -505,6 +528,16 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                             freeOption.setHour(freeOptionCell.getHour());
                             freeOption.setDay(freeOptionCell.getDay());
 
+                            if (year != null) {
+                                freeOption.setYear(year);
+                            }
+                            if (specialization != null) {
+                                freeOption.setSpecialization(specialization);
+                            }
+                            if (subgroup != null) {
+                                freeOption.setSubgroup(subgroup);
+                            }
+
                             freeOptions.add(freeOption);
                         }
                     }
@@ -516,7 +549,11 @@ public class FreeOptionServiceImpl implements FreeOptionService {
     }
 
     @SuppressWarnings("Duplicates")
-    public List<FreeOption> getFreeOptions(List<FreeOptionCell> freeOptionCells) {
+    public List<FreeOption> getFreeOptions(List<FreeOptionCell> freeOptionCells, Filter filter) {
+        String year = filter.getYear();
+        Specialization specialization = filter.getSpecialization();
+        Subgroup subgroup = filter.getSubgroup();
+
         List<FreeOption> freeOptions = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         WeekType currentWeekType = calculateWeekType(calendar);
@@ -555,7 +592,7 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                     if (currentWeekType.equals(freeOptionCell.getWeekType()) && currentDay.name().equals(freeOptionCell.getDay().name()) && (currentHour >= Integer.valueOf(freeOptionCell.getHour().substring(0, 2)))) {
                         continue;
                     }
-                    if (currentDay.name().equals(freeOptionCell.getDay().name()) && currentHour >= 20 && currentHour < 24 && freeOptionCell.getHour().substring(0, 2).equals("08")) {
+                    if (currentWeekType.equals(freeOptionCell.getWeekType()) && currentDay.name().equals(freeOptionCell.getDay().name()) && currentHour >= 20 && currentHour < 24 && freeOptionCell.getHour().substring(0, 2).equals("08")) {
                         calendar.add(Calendar.DATE, 1);
                     }
                     count++;
@@ -573,6 +610,16 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                     }
                     freeOption.setDay(freeOptionCell.getDay());
                     freeOption.setHour(freeOptionCell.getHour());
+
+                    if (year != null) {
+                        freeOption.setYear(year);
+                    }
+                    if (specialization != null) {
+                        freeOption.setSpecialization(specialization);
+                    }
+                    if (subgroup != null) {
+                        freeOption.setSubgroup(subgroup);
+                    }
 
                     freeOptions.add(freeOption);
                 }
@@ -622,7 +669,7 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                     if (currentWeekType.equals(freeOptionCell.getWeekType()) && currentDay.name().equals(freeOptionCell.getDay().name()) && (currentHour >= Integer.valueOf(freeOptionCell.getHour().substring(0, 2)))) {
                         continue;
                     }
-                    if (currentDay.name().equals(freeOptionCell.getDay().name()) && currentHour >= 20 && currentHour < 24 && freeOptionCell.getHour().substring(0, 2).equals("08")) {
+                    if (currentWeekType.equals(freeOptionCell.getWeekType()) && currentDay.name().equals(freeOptionCell.getDay().name()) && currentHour >= 20 && currentHour < 24 && freeOptionCell.getHour().substring(0, 2).equals("08")) {
                         calendar.add(Calendar.DATE, 1);
                     }
                     count++;

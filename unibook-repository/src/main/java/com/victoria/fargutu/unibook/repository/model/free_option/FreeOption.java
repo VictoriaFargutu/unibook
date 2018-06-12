@@ -1,6 +1,7 @@
 package com.victoria.fargutu.unibook.repository.model.free_option;
 
 import com.victoria.fargutu.unibook.repository.commons.Day;
+import com.victoria.fargutu.unibook.repository.commons.Specialization;
 import com.victoria.fargutu.unibook.repository.commons.Subgroup;
 import com.victoria.fargutu.unibook.repository.commons.WeekType;
 import com.victoria.fargutu.unibook.repository.model.classroom.ClassroomResponse;
@@ -16,6 +17,8 @@ public class FreeOption {
     private Date date;
     private Day day;
     private String hour;
+    private String year;
+    private Specialization specialization;
     private StudentsGroupResponse studentsGroup;
     private Subgroup subgroup;
 
@@ -57,6 +60,22 @@ public class FreeOption {
 
     public void setHour(String hour) {
         this.hour = hour;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public Specialization getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(Specialization specialization) {
+        this.specialization = specialization;
     }
 
     public StudentsGroupResponse getStudentsGroup() {
