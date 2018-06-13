@@ -2,6 +2,7 @@ package com.victoria.fargutu.unibook.repository.model.reservation;
 
 import com.victoria.fargutu.unibook.repository.commons.Day;
 import com.victoria.fargutu.unibook.repository.commons.Specialization;
+import com.victoria.fargutu.unibook.repository.commons.Subgroup;
 import com.victoria.fargutu.unibook.repository.commons.WeekType;
 import com.victoria.fargutu.unibook.repository.model.classroom.ClassroomResponse;
 import com.victoria.fargutu.unibook.repository.model.course.CourseResponse;
@@ -11,6 +12,7 @@ import com.victoria.fargutu.unibook.repository.model.user.UserResponse;
 public class ReservationResponse {
     private Long id;
     private StudentsGroupResponse studentsGroup;
+    private Subgroup subgroup;
     private ClassroomResponse classroom;
     private CourseResponse course;
     private String year;
@@ -28,6 +30,11 @@ public class ReservationResponse {
             this.studentsGroup = new StudentsGroupResponse(reservation.getStudentsGroup());
         } else {
             this.studentsGroup = null;
+        }
+        if (reservation.getSubgroup() != null) {
+            this.subgroup = reservation.getSubgroup();
+        } else {
+            this.subgroup = null;
         }
         if (reservation.getClassroom() != null) {
             this.classroom = new ClassroomResponse(reservation.getClassroom());
@@ -70,6 +77,14 @@ public class ReservationResponse {
 
     public void setStudentsGroup(StudentsGroupResponse studentsGroup) {
         this.studentsGroup = studentsGroup;
+    }
+
+    public Subgroup getSubgroup() {
+        return subgroup;
+    }
+
+    public void setSubgroup(Subgroup subgroup) {
+        this.subgroup = subgroup;
     }
 
     public ClassroomResponse getClassroom() {

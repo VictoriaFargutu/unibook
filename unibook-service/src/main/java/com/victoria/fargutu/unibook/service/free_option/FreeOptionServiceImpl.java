@@ -124,8 +124,8 @@ public class FreeOptionServiceImpl implements FreeOptionService {
             freeOptionCells = freeOptionCellRepository.findAllByClassroom(classroom);
         }
 
+        List<FreeOptionCell> freeOptionCellsClassType = new ArrayList<>();
         if (classroomType != null && !freeOptionCells.isEmpty()) {
-            List<FreeOptionCell> freeOptionCellsClassType = new ArrayList<>();
             for (FreeOptionCell freeOptionCell : freeOptionCells) {
                 if (freeOptionCell.getClassroom().getType().equals(classroomType)) {
                     freeOptionCellsClassType.add(freeOptionCell);
@@ -133,7 +133,13 @@ public class FreeOptionServiceImpl implements FreeOptionService {
             }
             freeOptionCells = freeOptionCellsClassType;
         } else if (classroomType != null) {
-            freeOptionCells = freeOptionCellRepository.findAllByClassroomType(filter.getClassroomType());
+            freeOptionCells = freeOptionCellRepository.findAll();
+            for (FreeOptionCell freeOptionCell : freeOptionCells) {
+                if (freeOptionCell.getClassroom().getType().equals(classroomType)) {
+                    freeOptionCellsClassType.add(freeOptionCell);
+                }
+            }
+            freeOptionCells = freeOptionCellsClassType;
         }
 
         if (day != null && !freeOptionCells.isEmpty()) {
