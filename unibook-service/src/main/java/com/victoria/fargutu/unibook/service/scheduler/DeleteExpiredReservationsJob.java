@@ -16,7 +16,7 @@ public class DeleteExpiredReservationsJob {
         this.reservationRepository = reservationRepository;
     }
 
-    @Scheduled(fixedRate = 1000 * 600000)
+    @Scheduled(fixedRate = 1000 * 60 * 3600 * 2)
     public void deleteExpiredReservations() {
         List<Reservation> reservations = reservationRepository.findAll();
         for (Reservation reservation : reservations) {
@@ -34,7 +34,7 @@ public class DeleteExpiredReservationsJob {
                 tempCalendar = Calendar.getInstance();
                 int currentHour = tempCalendar.get(Calendar.HOUR_OF_DAY);
                 if ((currentHour >= Integer.valueOf(reservation.getHour().substring(0, 2)))) {
-                   // reservationRepository.delete(reservation);
+                    reservationRepository.delete(reservation);
                 }
             }
         }

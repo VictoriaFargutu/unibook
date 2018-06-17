@@ -23,6 +23,7 @@ public class AuthApi {
         this.authService = authService;
         this.authManager = authManager;
         this.userService = userService;
+
     }
 
     @HasRole(UserRole.USER)

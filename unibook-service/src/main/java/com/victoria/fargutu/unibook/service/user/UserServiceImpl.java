@@ -3,7 +3,6 @@ package com.victoria.fargutu.unibook.service.user;
 import com.victoria.fargutu.unibook.repository.commons.UserRole;
 import com.victoria.fargutu.unibook.repository.db.UserRepository;
 import com.victoria.fargutu.unibook.repository.model.user.User;
-import com.victoria.fargutu.unibook.service.ExcelReader;
 import com.victoria.fargutu.unibook.service.commons.ExceptionType;
 import com.victoria.fargutu.unibook.service.exceptions.NotFoundException;
 import com.victoria.fargutu.unibook.service.exceptions.UnibookException;
@@ -20,19 +19,16 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private UserValidator userValidator;
     private EncryptionManager encryptionManager;
-    private ExcelReader excelReader;
 
     @Autowired
-    UserServiceImpl(UserRepository userRepository, UserValidator userValidator, EncryptionManager encryptionManager, ExcelReader excelReader) {
+    UserServiceImpl(UserRepository userRepository, UserValidator userValidator, EncryptionManager encryptionManager) {
         this.userRepository = userRepository;
         this.userValidator = userValidator;
         this.encryptionManager = encryptionManager;
-        this.excelReader = excelReader;
     }
 
     @Override
     public User createUser(User user) {
-        //TODO modify this method to reflect all the fields
         user.setRole(UserRole.USER);
         RuntimeException exception = userValidator.getValidationException(user);
         if (exception != null) {
@@ -54,7 +50,6 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new NotFoundException("User Not Found!");
         }
-        //TODO: 401 UNAUTHORIZED
         return user;
     }
 
@@ -72,13 +67,11 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new NotFoundException("User Not Found!");
         }
-        //TODO: 401 UNAUTHORIZED and 403 FORBIDDEN
         userRepository.delete(id);
     }
 
     @Override
     public User updateUser(Long id, User user) {
-        //TODO change this method
         User existingUser = userRepository.findOne(id);
         if (existingUser == null) {
             throw new NotFoundException("User Not Found!");

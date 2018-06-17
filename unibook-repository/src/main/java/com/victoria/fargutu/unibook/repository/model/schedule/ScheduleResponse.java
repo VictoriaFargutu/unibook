@@ -7,13 +7,11 @@ public class ScheduleResponse {
     private Long id;
     private Semester semester;
     private FacultyResponse faculty;
-    // private Set<ScheduleCellResponse> scheduleCellResponses;
 
     public ScheduleResponse(Schedule schedule) {
         this.id = schedule.getId();
         this.semester = schedule.getSemester();
         this.faculty = new FacultyResponse(schedule.getFaculty());
-        //this.scheduleCellResponses = new ScheduleCellResponse(schedule.getScheduleCells());
     }
 
     public Long getId() {

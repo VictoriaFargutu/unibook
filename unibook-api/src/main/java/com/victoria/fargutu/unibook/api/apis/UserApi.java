@@ -35,6 +35,7 @@ public class UserApi {
         userService.deleteUserById(id);
     }
 
+    @HasRole(UserRole.USER)
     @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
     public User updateUser(@PathVariable("id") Long id, @RequestBody User user) {
         return userService.updateUser(id, user);

@@ -31,7 +31,6 @@ public class ReservationServiceImpl implements ReservationService {
     @SuppressWarnings("Duplicates")
     @Override
     public ReservationResponse createReservation(Reservation reservation) {
-        //TODO if is possible then make reservation
         List<ScheduleCell> scheduleCells = scheduleCellRepository.findAll();
         List<Reservation> reservations = reservationRepository.findAll();
         for (ScheduleCell scheduleCell : scheduleCells) {

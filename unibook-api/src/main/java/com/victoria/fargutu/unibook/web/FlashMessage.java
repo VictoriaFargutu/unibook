@@ -42,22 +42,6 @@ public class FlashMessage implements Serializable {
         return build(null, message, Type.DANGER);
     }
 
-    public static void warn(RedirectAttributes redirectAttributes, String title, String message) {
-        bind(redirectAttributes, warn(title, message));
-    }
-
-    public static void warn(RedirectAttributes redirectAttributes, String message) {
-        bind(redirectAttributes, warn(message));
-    }
-
-    public static FlashMessage warn(String title, String message) {
-        return build(title, message, Type.WARNING);
-    }
-
-    public static FlashMessage warn(String message) {
-        return build(null, message, Type.WARNING);
-    }
-
     public static void info(RedirectAttributes redirectAttributes, String title, String message) {
         bind(redirectAttributes, info(title, message));
     }

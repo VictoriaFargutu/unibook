@@ -14,24 +14,20 @@ import java.util.List;
 @RequestMapping(path = "/freeOptions")
 public class FreeOptionApi {
     private FreeOptionService freeOptionService;
-    private FreeOptionCellService freeOptionCellService;
 
-    public FreeOptionApi(FreeOptionService freeOptionService, FreeOptionCellService freeOptionCellService) {
+    public FreeOptionApi(FreeOptionService freeOptionService) {
         this.freeOptionService = freeOptionService;
-        this.freeOptionCellService = freeOptionCellService;
     }
 
     @HasRole(UserRole.USER)
     @GetMapping("/classrooms")
     public List<FreeOption> getAllFreeOptionsByClassroom(@RequestParam("classroomId") Long classroomId) {
-//        freeOptionCellService.addFreeOptioncells();
          return freeOptionService.getAllFreeOptionsByClassroom(classroomId);
     }
 
     @HasRole(UserRole.USER)
     @PostMapping("/filters")
     public List<FreeOption> getAllByFilters(@RequestBody Filter filter) {
-//        List<FreeOption> freeOptions = new ArrayList<>();
         List<FreeOption> freeOptions = freeOptionService.getAllFreeOptionsByFilter(filter);
         return freeOptions;
     }

@@ -51,15 +51,15 @@ public class IndexController {
         return "index/index";
     }
 
-    @HasRole(UserRole.USER)
+    @HasRole(UserRole.ADMIN)
     @RequestMapping(value = "/schedule", method = RequestMethod.POST)
     public String createSchedule(@ModelAttribute Schedule schedule, RedirectAttributes redirectAttributes) {
         Schedule schedule1 = scheduleService.createSchedule(schedule);
         redirectAttributes.addFlashAttribute("schedule", scheduleService.getSchedule(schedule1));
-        return "redirect:/scheduleCell";
+        return "redirect:/schedule/cell";
     }
 
-    @HasRole(UserRole.USER)
+    @HasRole(UserRole.ADMIN)
     @RequestMapping(path = "/logout", method = RequestMethod.POST)
     public String logout() {
         authService.logout();

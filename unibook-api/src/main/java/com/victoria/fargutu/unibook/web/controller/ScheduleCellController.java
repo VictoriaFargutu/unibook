@@ -12,6 +12,7 @@ import com.victoria.fargutu.unibook.service.classroom.ClassroomService;
 import com.victoria.fargutu.unibook.service.course.CourseService;
 import com.victoria.fargutu.unibook.service.free_option.cell.FreeOptionCellService;
 import com.victoria.fargutu.unibook.service.group.StudentsGroupService;
+import com.victoria.fargutu.unibook.service.schedule.ScheduleService;
 import com.victoria.fargutu.unibook.service.scheduleCell.ScheduleCellService;
 import com.victoria.fargutu.unibook.service.security.HasRole;
 import com.victoria.fargutu.unibook.service.user.UserService;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +39,10 @@ public class ScheduleCellController {
     private ScheduleCellService scheduleCellService;
     private FreeOptionCellService freeOptionCellService;
     private Schedule schedule;
+    private ScheduleService scheduleService;
 
     @Autowired
-    public ScheduleCellController(AuthManager authManager, UserService userService, ClassroomService classroomService, CourseService courseService, StudentsGroupService studentsGroupService, ScheduleCellService scheduleCellService, FreeOptionCellService freeOptionCellService) {
+    public ScheduleCellController(AuthManager authManager, UserService userService, ClassroomService classroomService, CourseService courseService, StudentsGroupService studentsGroupService, ScheduleCellService scheduleCellService, FreeOptionCellService freeOptionCellService, ScheduleService scheduleService) {
         this.authManager = authManager;
         this.userService = userService;
         this.classroomService = classroomService;
@@ -47,11 +50,12 @@ public class ScheduleCellController {
         this.studentsGroupService = studentsGroupService;
         this.scheduleCellService = scheduleCellService;
         this.freeOptionCellService = freeOptionCellService;
+        this.scheduleService = scheduleService;
     }
 
-    @HasRole(UserRole.USER)
+    @HasRole(UserRole.ADMIN)
     @GetMapping
-    public String openScheduleCellPage(@ModelAttribute("schedule") Schedule schedule, ModelMap modelMap) {
+    public String openScheduleCellPage(@ModelAttribute("schedule") Schedule schedule, ModelMap modelMap, RedirectAttributes redirectAttributes) {
         User user = authManager.getLoggedInUser();
         modelMap.put("loggedUser", user);
         this.schedule = schedule;
@@ -78,16 +82,21 @@ public class ScheduleCellController {
         modelMap.put("hours", hours);
         modelMap.put("studentsGroups", studentsGroups);
         modelMap.put("subgroups", subgroups);
+        redirectAttributes.addFlashAttribute("schedule", scheduleService.getSchedule(schedule));
 
         return "schedule";
     }
 
-    @HasRole(UserRole.USER)
+    @HasRole(UserRole.ADMIN)
     @PostMapping
-    public String createScheduleCell(@ModelAttribute ScheduleCell scheduleCell) {
-        scheduleCell.setSchedule(schedule);
+    public String createScheduleCell(@ModelAttribute("schedule") Schedule schedule, @ModelAttribute ScheduleCell scheduleCell, RedirectAttributes redirectAttributes) {
+        scheduleCell.setSchedule(scheduleService.getSchedule(this.schedule));
+        if (scheduleCell.getSubgroup().equals(Subgroup.NONE)) {
+            scheduleCell.setSubgroup(null);
+        }
         scheduleCellService.createScheduleCell(scheduleCell);
         freeOptionCellService.addFreeOptioncells();
-        return "redirect:/scheduleCell";
+        redirectAttributes.addFlashAttribute("schedule", scheduleService.getSchedule(this.schedule));
+        return "redirect:/schedule/cell";
     }
 }

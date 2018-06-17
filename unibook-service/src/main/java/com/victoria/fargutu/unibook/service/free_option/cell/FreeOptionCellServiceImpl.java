@@ -47,17 +47,20 @@ public class FreeOptionCellServiceImpl implements FreeOptionCellService {
             for (Day day : days) {
                 for (String hour : hours) {
                     for (Classroom classroom : classrooms) {
+                        int count = 0;
                         for (ScheduleCell scheduleCell : scheduleCells) {
                             if (scheduleCell.getWeekType().equals(weekType) && scheduleCell.getDay().equals(day) && scheduleCell.getHour().equals(hour) && scheduleCell.getClassroom().getId().equals(classroom.getId())) {
-                                break;
-                            } else {
-                                FreeOptionCell freeOptionCell = new FreeOptionCell();
-                                freeOptionCell.setWeekType(weekType);
-                                freeOptionCell.setDay(day);
-                                freeOptionCell.setHour(hour);
-                                freeOptionCell.setClassroom(classroom);
-                                freeOptionCellRepository.save(freeOptionCell);
+                               count++;
+                               break;
                             }
+                        }
+                        if(count == 0){
+                            FreeOptionCell freeOptionCell = new FreeOptionCell();
+                            freeOptionCell.setWeekType(weekType);
+                            freeOptionCell.setDay(day);
+                            freeOptionCell.setHour(hour);
+                            freeOptionCell.setClassroom(classroom);
+                            freeOptionCellRepository.save(freeOptionCell);
                         }
                     }
                 }

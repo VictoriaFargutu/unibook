@@ -1,7 +1,9 @@
 package com.victoria.fargutu.unibook.web.controller;
 
+import com.victoria.fargutu.unibook.repository.commons.UserRole;
 import com.victoria.fargutu.unibook.repository.model.auth.AuthSession;
 import com.victoria.fargutu.unibook.service.auth.AuthService;
+import com.victoria.fargutu.unibook.service.security.HasRole;
 import com.victoria.fargutu.unibook.web.FlashMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

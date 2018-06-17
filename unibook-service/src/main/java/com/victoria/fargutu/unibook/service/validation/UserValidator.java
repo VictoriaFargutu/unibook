@@ -7,10 +7,6 @@ import com.victoria.fargutu.unibook.service.exceptions.InvalidFieldException;
 import com.victoria.fargutu.unibook.service.exceptions.UnibookException;
 import org.springframework.stereotype.Component;
 
-/**
- * Created by razvan on 23/01/2018.
- */
-
 @Component
 public class UserValidator {
     public UnibookException getValidationException(User user) {

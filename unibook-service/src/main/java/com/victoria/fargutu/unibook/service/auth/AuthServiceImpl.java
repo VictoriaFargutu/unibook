@@ -46,7 +46,7 @@ public class AuthServiceImpl implements AuthService {
         }
         AuthSession authSession = new AuthSession();
         authSession.setSessionToken(token);
-        authSession.setExpirationTime(System.currentTimeMillis() + 3 * 60 * 60 * 1000);
+        authSession.setExpirationTime(System.currentTimeMillis() + 2 * 60 * 60 * 1000 * 24);
         authSession.setUserId(user.getId());
         return sessionRepository.save(authSession);
     }

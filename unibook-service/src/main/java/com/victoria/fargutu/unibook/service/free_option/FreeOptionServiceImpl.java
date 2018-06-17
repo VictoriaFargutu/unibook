@@ -37,8 +37,7 @@ public class FreeOptionServiceImpl implements FreeOptionService {
 
     private List<FreeOption> verifyWithReservations(List<FreeOption> freeOptions) {
         if (!freeOptions.isEmpty()) {
-            List<FreeOption> tempFreeOptions = new ArrayList<>();
-            tempFreeOptions.addAll(freeOptions);
+            List<FreeOption> tempFreeOptions = new ArrayList<>(freeOptions);
 
             List<Reservation> reservations = reservationRepository.findAll();
             for (FreeOption freeOption : tempFreeOptions) {
@@ -58,8 +57,12 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                             if (calendar.getTime().equals(calendarFreeOption.getTime())) {
                                 if (tempReservation.getHour().equals(freeOption.getHour())) {
                                     if (tempReservation.getWeekType().equals(freeOption.getWeekType())) {
-                                        if (tempReservation.getClassroom().getId().equals(freeOption.getClassroom().getId())) {
+                                        if (freeOption.getStudentsGroup() != null && tempReservation.getStudentsGroup() != null && tempReservation.getStudentsGroup().getId().equals(freeOption.getStudentsGroup().getId())) {
                                             freeOptions.remove(freeOption);
+                                        } else if (freeOption.getStudentsGroup() == null) {
+                                            if (tempReservation.getClassroom().getId().equals(freeOption.getClassroom().getId())) {
+                                                freeOptions.remove(freeOption);
+                                            }
                                         }
                                     }
                                 }
@@ -107,6 +110,7 @@ public class FreeOptionServiceImpl implements FreeOptionService {
     @SuppressWarnings("Duplicates")
     @Override
     public List<FreeOption> getAllFreeOptionsByFilter(Filter filter) {
+        int countSearchByFilter = 0;
         List<FreeOptionCell> freeOptionCells = new ArrayList<>();
         List<FreeOption> freeOptions = new ArrayList<>();
 
@@ -122,6 +126,7 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                 throw new NotFoundException("Classroom Not Found!");
             }
             freeOptionCells = freeOptionCellRepository.findAllByClassroom(classroom);
+            countSearchByFilter++;
         }
 
         List<FreeOptionCell> freeOptionCellsClassType = new ArrayList<>();
@@ -132,7 +137,8 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                 }
             }
             freeOptionCells = freeOptionCellsClassType;
-        } else if (classroomType != null) {
+            countSearchByFilter++;
+        } else if (classroomType != null && freeOptionCells.isEmpty() && countSearchByFilter == 0) {
             freeOptionCells = freeOptionCellRepository.findAll();
             for (FreeOptionCell freeOptionCell : freeOptionCells) {
                 if (freeOptionCell.getClassroom().getType().equals(classroomType)) {
@@ -140,6 +146,7 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                 }
             }
             freeOptionCells = freeOptionCellsClassType;
+            countSearchByFilter++;
         }
 
         if (day != null && !freeOptionCells.isEmpty()) {
@@ -150,8 +157,10 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                 }
             }
             freeOptionCells = freeOptionCellsDays;
-        } else if (day != null) {
+            countSearchByFilter++;
+        } else if (day != null && freeOptionCells.isEmpty() && countSearchByFilter == 0) {
             freeOptionCells.addAll(freeOptionCellRepository.findAllByDay(day));
+            countSearchByFilter++;
         }
 
         if (hour != null && !freeOptionCells.isEmpty()) {
@@ -162,8 +171,9 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                 }
             }
             freeOptionCells = freeOptionCellsHour;
-        } else if (hour != null && freeOptionCells.isEmpty()) {
+        } else if (hour != null && freeOptionCells.isEmpty() && countSearchByFilter == 0) {
             freeOptionCells.addAll(freeOptionCellRepository.findAllByHour(hour));
+            countSearchByFilter++;
         }
 
         if (filter.getDate() == null && weekType != null && !freeOptionCells.isEmpty()) {
@@ -174,8 +184,10 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                 }
             }
             freeOptionCells = freeOptionCellsWeek;
-        } else if (filter.getDate() == null && weekType != null && freeOptionCells.isEmpty()) {
+            countSearchByFilter++;
+        } else if (filter.getDate() == null && weekType != null && freeOptionCells.isEmpty() && countSearchByFilter == 0) {
             freeOptionCells.addAll(freeOptionCellRepository.findAllByWeekType(weekType));
+            countSearchByFilter++;
         }
 
         //INITIAL FILTER WITH DATE
@@ -195,8 +207,10 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                     }
                 }
                 freeOptionCells = freeOptionCellsDays;
-            } else if (day == null && freeOptionCells.isEmpty()) {
+                countSearchByFilter++;
+            } else if (day == null && freeOptionCells.isEmpty() && countSearchByFilter == 0) {
                 freeOptionCells.addAll(freeOptionCellRepository.findAllByDay(dateDay));
+                countSearchByFilter++;
             }
 
             //WEEK TYPE
@@ -208,10 +222,13 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                     }
                 }
                 freeOptionCells = freeOptionCellsWeek;
-            } else if (freeOptionCells.isEmpty()) {
+                countSearchByFilter++;
+            } else if (freeOptionCells.isEmpty() && countSearchByFilter == 0) {
                 freeOptionCells.addAll(freeOptionCellRepository.findAllByWeekType(currentWeekType));
+                countSearchByFilter++;
             }
             freeOptions = getFreeOptionsByDate(freeOptionCells, filter);
+
         } else if (filter.getWeekType() != null || filter.getHour() != null) {
             if (!freeOptionCells.isEmpty()) {
                 freeOptions = getFreeOptionsAccordingToFilter(freeOptionCells, filter);
@@ -220,7 +237,7 @@ public class FreeOptionServiceImpl implements FreeOptionService {
             freeOptions = getFreeOptions(freeOptionCells, filter);
         }
 
-        if (freeOptionCells.size() == 0) {
+        if (freeOptionCells.size() == 0 && countSearchByFilter == 0) {
             freeOptionCells = freeOptionCellRepository.findAll();
             if (!freeOptionCells.isEmpty()) {
                 freeOptions = getFreeOptions(freeOptionCells, filter);
@@ -233,64 +250,58 @@ public class FreeOptionServiceImpl implements FreeOptionService {
         String year = filter.getYear();
 
         if (year != null && studentsGroup == null && specialization == null) {
-            List<FreeOption> freeOptionsByYear = new ArrayList<>();
+            List<FreeOption> freeOptionsByYear = new ArrayList<>(freeOptions);
             for (FreeOption freeOption : freeOptions) {
                 for (ScheduleCell scheduleCell : scheduleCells) {
                     if (scheduleCell.getWeekType().equals(freeOption.getWeekType())) {
                         if (scheduleCell.getDay().equals(freeOption.getDay())) {
                             if (scheduleCell.getHour().equals(freeOption.getHour())) {
                                 if (scheduleCell.getStudentsGroup().getYear().equals(year)) {
-                                    if (scheduleCells.indexOf(scheduleCell) == scheduleCells.size() - 1) {
-                                        break;
-                                    } else {
-                                        continue;
-                                    }
+                                    freeOptionsByYear.remove(freeOption);
+                                    break;
                                 }
                             }
                         }
                     }
-                    freeOptionsByYear.add(freeOption);
+                    freeOption.setYear(year);
                 }
             }
             freeOptions = freeOptionsByYear;
         }
 
         if (specialization != null && studentsGroup == null) {
-            List<FreeOption> freeOptionsBySpecialization = new ArrayList<>();
+            List<FreeOption> freeOptionsBySpecialization = new ArrayList<>(freeOptions);
             for (FreeOption freeOption : freeOptions) {
                 for (ScheduleCell scheduleCell : scheduleCells) {
                     if (scheduleCell.getWeekType().equals(freeOption.getWeekType())) {
                         if (scheduleCell.getDay().equals(freeOption.getDay())) {
                             if (scheduleCell.getHour().equals(freeOption.getHour())) {
                                 if (scheduleCell.getStudentsGroup().getSpecialization().equals(specialization)) {
-                                    if (scheduleCells.indexOf(scheduleCell) == scheduleCells.size() - 1) {
-                                        break;
-                                    } else {
-                                        continue;
-                                    }
+                                    freeOptionsBySpecialization.remove(freeOption);
+                                    break;
                                 }
                             }
                         }
                     }
-                    freeOptionsBySpecialization.add(freeOption);
+                    freeOption.setSpecialization(specialization);
+                    if (year != null) {
+                        freeOption.setYear(year);
+                    }
                 }
             }
             freeOptions = freeOptionsBySpecialization;
         }
 
         if (studentsGroup != null) {
-            List<FreeOption> freeOptionByGroup = new ArrayList<>();
+            List<FreeOption> freeOptionsByGroup = new ArrayList<>(freeOptions);
             for (FreeOption freeOption : freeOptions) {
                 for (ScheduleCell scheduleCell : scheduleCells) {
                     if (scheduleCell.getWeekType().equals(freeOption.getWeekType())) {
                         if (scheduleCell.getDay().equals(freeOption.getDay())) {
                             if (scheduleCell.getHour().equals(freeOption.getHour())) {
                                 if (scheduleCell.getStudentsGroup().getId().equals(studentsGroup.getId())) {
-                                    if (scheduleCells.indexOf(scheduleCell) == scheduleCells.size() - 1) {
-                                        break;
-                                    } else {
-                                        continue;
-                                    }
+                                    freeOptionsByGroup.remove(freeOption);
+                                    break;
                                 }
                             }
                         }
@@ -300,11 +311,8 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                             if (scheduleCell.getDay().equals(freeOption.getDay())) {
                                 if (scheduleCell.getHour().equals(freeOption.getHour())) {
                                     if (scheduleCell.getSubgroup().equals(filter.getSubgroup())) {
-                                        if (scheduleCells.indexOf(scheduleCell) == scheduleCells.size() - 1) {
-                                            break;
-                                        } else {
-                                            continue;
-                                        }
+                                        freeOptionsByGroup.remove(freeOption);
+                                        break;
                                     }
                                 }
                             }
@@ -314,11 +322,17 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                     if (filter.getSubgroup() != null) {
                         freeOption.setSubgroup(filter.getSubgroup());
                     }
-                    freeOptionByGroup.add(freeOption);
+                    if (specialization != null) {
+                        freeOption.setSpecialization(specialization);
+                    }
+                    if (year != null) {
+                        freeOption.setYear(year);
+                    }
+
                 }
 
             }
-            freeOptions = freeOptionByGroup;
+            freeOptions = freeOptionsByGroup;
         }
 
         return verifyWithReservations(freeOptions);
@@ -327,7 +341,7 @@ public class FreeOptionServiceImpl implements FreeOptionService {
     @SuppressWarnings("Duplicates")
     public List<FreeOption> getFreeOptionsByDate(List<FreeOptionCell> freeOptionCells, Filter filter) {
         List<FreeOption> freeOptions = new ArrayList<>();
-        List<ScheduleCell> scheduleCells = scheduleCellRepository.findAll();
+
         for (FreeOptionCell freeOptionCell : freeOptionCells) {
             FreeOption freeOption = new FreeOption();
             freeOption.setClassroom(new ClassroomResponse(freeOptionCell.getClassroom()));
@@ -335,86 +349,6 @@ public class FreeOptionServiceImpl implements FreeOptionService {
             freeOption.setDate(filter.getDate());
             freeOption.setDay(freeOptionCell.getDay());
             freeOption.setHour(freeOptionCell.getHour());
-
-            StudentsGroup studentsGroup = filter.getStudentsGroup();
-            Specialization specialization = filter.getSpecialization();
-            String year = filter.getYear();
-
-            if (year != null && studentsGroup == null && specialization == null) {
-                for (ScheduleCell scheduleCell : scheduleCells) {
-                    if (scheduleCell.getWeekType().equals(freeOptionCell.getWeekType())) {
-                        if (scheduleCell.getDay().equals(freeOptionCell.getDay())) {
-                            if (scheduleCell.getHour().equals(freeOptionCell.getHour())) {
-                                if (scheduleCell.getStudentsGroup().getYear().equals(year)) {
-                                    if (scheduleCells.indexOf(scheduleCell) == scheduleCells.size() - 1) {
-                                        break;
-                                    } else {
-                                        continue;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    freeOptions.add(freeOption);
-                }
-            }
-
-            if (specialization != null && studentsGroup == null) {
-                for (ScheduleCell scheduleCell : scheduleCells) {
-                    if (scheduleCell.getWeekType().equals(freeOptionCell.getWeekType())) {
-                        if (scheduleCell.getDay().equals(freeOptionCell.getDay())) {
-                            if (scheduleCell.getHour().equals(freeOptionCell.getHour())) {
-                                if (scheduleCell.getStudentsGroup().getSpecialization().equals(specialization)) {
-                                    if (scheduleCells.indexOf(scheduleCell) == scheduleCells.size() - 1) {
-                                        break;
-                                    } else {
-                                        continue;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    freeOptions.add(freeOption);
-                }
-            }
-
-            if (studentsGroup != null) {
-                for (ScheduleCell scheduleCell : scheduleCells) {
-                    if (scheduleCell.getWeekType().equals(freeOptionCell.getWeekType())) {
-                        if (scheduleCell.getDay().equals(freeOptionCell.getDay())) {
-                            if (scheduleCell.getHour().equals(freeOptionCell.getHour())) {
-                                if (scheduleCell.getStudentsGroup().getId().equals(studentsGroup.getId())) {
-                                    if (scheduleCells.indexOf(scheduleCell) == scheduleCells.size() - 1) {
-                                        break;
-                                    } else {
-                                        continue;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if (filter.getSubgroup() != null && scheduleCell.getSubgroup() != null) {
-                        if (scheduleCell.getWeekType().equals(freeOptionCell.getWeekType())) {
-                            if (scheduleCell.getDay().equals(freeOptionCell.getDay())) {
-                                if (scheduleCell.getHour().equals(freeOptionCell.getHour())) {
-                                    if (scheduleCell.getSubgroup().equals(filter.getSubgroup())) {
-                                        if (scheduleCells.indexOf(scheduleCell) == scheduleCells.size() - 1) {
-                                            break;
-                                        } else {
-                                            continue;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    freeOption.setStudentsGroup(new StudentsGroupResponse(studentsGroup));
-                    if (filter.getSubgroup() != null) {
-                        freeOption.setSubgroup(filter.getSubgroup());
-                    }
-                }
-
-            }
 
             freeOptions.add(freeOption);
         }
@@ -585,6 +519,7 @@ public class FreeOptionServiceImpl implements FreeOptionService {
         Day freeOptionCellDay;
         Day tempDay = freeOptionCells.get(0).getDay();
         int count = 0;
+        int temp = 0;
         for (WeekType weekType : weekTypes) {
             for (FreeOptionCell freeOptionCell : freeOptionCells) {
 
@@ -600,6 +535,11 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                     }
                     if (currentWeekType.equals(freeOptionCell.getWeekType()) && currentDay.name().equals(freeOptionCell.getDay().name()) && currentHour >= 20 && currentHour < 24 && freeOptionCell.getHour().substring(0, 2).equals("08")) {
                         calendar.add(Calendar.DATE, 1);
+                    }
+
+                    if (temp == 0 && !currentWeekType.equals(freeOptionCell.getWeekType()) && tempDay.name().equals(freeOptionCell.getDay().name()) && currentHour >= 20 && currentHour < 24) {
+                        calendar.add(Calendar.DATE, 1);
+                        temp++;
                     }
                     count++;
                     FreeOption freeOption = new FreeOption();
@@ -663,6 +603,7 @@ public class FreeOptionServiceImpl implements FreeOptionService {
         Day tempDay = freeOptionCells.get(0).getDay();
         int count = 0;
         for (WeekType weekType : weekTypes) {
+            int temp = 0;
             for (FreeOptionCell freeOptionCell : freeOptionCells) {
 
                 freeOptionCellDay = freeOptionCell.getDay();
@@ -677,6 +618,10 @@ public class FreeOptionServiceImpl implements FreeOptionService {
                     }
                     if (currentWeekType.equals(freeOptionCell.getWeekType()) && currentDay.name().equals(freeOptionCell.getDay().name()) && currentHour >= 20 && currentHour < 24 && freeOptionCell.getHour().substring(0, 2).equals("08")) {
                         calendar.add(Calendar.DATE, 1);
+                    }
+                    if (temp == 0 && !currentWeekType.equals(freeOptionCell.getWeekType()) && tempDay.name().equals(freeOptionCell.getDay().name()) && currentHour >= 20 && currentHour < 24) {
+                        calendar.add(Calendar.DATE, 1);
+                        temp++;
                     }
                     count++;
                     FreeOption freeOption = new FreeOption();
